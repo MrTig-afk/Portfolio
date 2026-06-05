@@ -682,10 +682,10 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
     if (!msg) { setErr('f-msg', true); ok = false; }
     if (!ok) return;
 
-    fetch('https://formspree.io/f/8b0c55f8-c965-4da2-9be4-5759b65d6a5b', {
+    fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: name, email: email, message: msg })
+      body: JSON.stringify({ access_key: '8b0c55f8-c965-4da2-9be4-5759b65d6a5b', name: name, email: email, message: msg })
     }).then(function (res) {
       if (res.ok) {
         success.classList.add('show');
