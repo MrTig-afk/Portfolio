@@ -608,7 +608,7 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
       </button>
       <div class="form-success" id="formSuccess">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        <span>Message ready, opening your mail client…</span>
+        <span>Message sent! I'll get back to you soon.</span>
       </div>
     </form>
   </div>
@@ -682,14 +682,21 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
     if (!msg) { setErr('f-msg', true); ok = false; }
     if (!ok) return;
 
-    success.classList.add('show');
-    var body = encodeURIComponent('Hi Kaushik,\n\n' + msg + '\n\n' + name + ' (' + email + ')');
-    var subject = encodeURIComponent('Portfolio enquiry from ' + name);
-    setTimeout(function () {
-      window.location.href = 'mailto:kaushiknaru2002@gmail.com?subject=' + subject + '&body=' + body;
-    }, 700);
-    form.reset();
-    setTimeout(function () { success.classList.remove('show'); }, 5000);
+    fetch('https://formspree.io/f/8b0c55f8-c965-4da2-9be4-5759b65d6a5b', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, email: email, message: msg })
+    }).then(function (res) {
+      if (res.ok) {
+        success.classList.add('show');
+        form.reset();
+        setTimeout(function () { success.classList.remove('show'); }, 5000);
+      } else {
+        alert('Something went wrong. Please try again.');
+      }
+    }).catch(function () {
+      alert('Something went wrong. Please try again.');
+    });
   });
 })();
 </script>
