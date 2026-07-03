@@ -483,8 +483,38 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
   </div>
 
   <div class="projects">
-    <!-- NutriScan -->
+    <!-- FinanceTracker -->
     <article class="card reveal">
+      <div class="shot has-img">
+        <div class="shot-bg" style="background-image:url('assets/financetracker-overview-dark.png')"></div>
+        <span class="corner tl"></span><span class="corner br"></span>
+        <span class="tag">Privacy-first FinTech PWA</span>
+        <img class="shot-img" src="assets/financetracker-overview-dark.png" alt="FinanceTracker overview screen showing the month's spending donut and category breakdown" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <div class="card-no"><b>P-01</b> / financetracker</div>
+        <h3><a class="proj-link" href="FinanceTracker Dashboard.html">FinanceTracker<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10M7 17 17 7"/></svg></a></h3>
+        <p>A self-hosted finance tracker that turns monthly CommBank and Westpac CSV exports into an AI-categorised spending dashboard, on desktop and as a phone PWA over Tailscale. A mandatory fail-closed sanitiser guarantees raw bank data never leaves your machine — only anonymous merchant-and-amount pairs go out for categorisation.</p>
+        <div class="chips">
+          <span class="chip">FastAPI</span>
+          <span class="chip">SQLite</span>
+          <span class="chip">Vite PWA</span>
+          <span class="chip">Chart.js</span>
+          <span class="chip">OpenRouter</span>
+          <span class="chip">Tailscale</span>
+        </div>
+        <div class="card-foot">
+          <a class="linkbtn" href="https://github.com/MrTig-afk/FinanceTracker" target="_blank" rel="noopener">
+            Source on GitHub
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+          <span class="linkbtn muted" style="cursor:default">Self-hosted by design</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- NutriScan -->
+    <article class="card reveal d1">
       <div class="shot has-img">
         <div class="shot-bg" style="background-image:url('assets/nutriscan-phone.jpeg')"></div>
         <span class="corner tl"></span><span class="corner br"></span>
@@ -492,7 +522,7 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
         <img class="shot-img" src="assets/nutriscan-phone.jpeg" alt="NutriScan sign-in screen" loading="lazy" />
       </div>
       <div class="card-body">
-        <div class="card-no"><b>P-01</b> / nutriscan</div>
+        <div class="card-no"><b>P-02</b> / nutriscan</div>
         <h3><a class="proj-link" href="NutriScan Dashboard.html">NutriScan<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10M7 17 17 7"/></svg></a></h3>
         <p>Upload an image of a nutritional label and instantly get its macros. NutriScan reads the label with AI vision, parses the values, and returns a clean breakdown of calories, protein, carbs, and fat. No manual entry.</p>
         <div class="chips">
@@ -520,7 +550,7 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
         <img class="shot-img" src="assets/firstmove-phone.jpeg" alt="FirstMove loading screen" loading="lazy" />
       </div>
       <div class="card-body">
-        <div class="card-no"><b>P-02</b> / firstmove</div>
+        <div class="card-no"><b>P-03</b> / firstmove</div>
         <h3><a class="proj-link" href="FirstMove Dashboard.html">FirstMove<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10M7 17 17 7"/></svg></a></h3>
         <p>A mobile-first party card game that picks a player by touch and serves up quick icebreakers, truths, dares, and conversation prompts. Built around a multi-touch &ldquo;finger picker&rdquo; and a snappy, tactile deck of prompts.</p>
         <div class="chips">
