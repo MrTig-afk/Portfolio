@@ -46,7 +46,7 @@
 .feat p { font-size: 13px; color: var(--ink-2); line-height: 1.55; }
 
 /* ---------- page-specific: screens gallery ---------- */
-.screens { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 @media (max-width: 980px) { .screens { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 520px) { .screens { grid-template-columns: 1fr; } }
 .screen img {
@@ -87,7 +87,7 @@
   <section class="d-hero wrap">
     <div class="eyebrow rv">Engineering case study · Privacy-first FinTech</div>
     <h1 class="rv d1">FinanceTracker</h1>
-    <p class="rv d2">A self-hosted personal finance tracker that turns monthly CommBank and Westpac CSV exports into an AI-categorised spending dashboard — desktop and installable phone PWA — where privacy is a property of the architecture, not a promise.</p>
+    <p class="rv d2">A self-hosted personal finance tracker that turns monthly CommBank and Westpac CSV exports into an AI-categorised spending dashboard, on desktop and as an installable phone PWA, where privacy is a property of the architecture, not a promise.</p>
     <div class="sample-pill live rv d3"><span class="d"></span> 100% local data · nothing sensitive ever leaves the machine</div>
   </section>
 
@@ -121,7 +121,7 @@
           <span class="stage">drive</span>
         </div>
         <p class="flow-note">
-          One FastAPI backend owns all data and logic; the desktop dashboard and phone PWA are stateless views of it, served privately over Tailscale. The <b>mandatory sanitiser</b> runs before any network call and <b>fails closed</b>: if a row can't be confidently cleaned, it is dropped rather than risk sending it. The only payload that ever leaves is <code>(row_index, cleaned_description, amount)</code> — and every outbound payload is written to a local audit log so it can be verified after the fact.
+          One FastAPI backend owns all data and logic; the desktop dashboard and phone PWA are stateless views of it, served privately over Tailscale. The <b>mandatory sanitiser</b> runs before any network call and <b>fails closed</b>: if a row can't be confidently cleaned, it is dropped rather than risk sending it. The only payload that ever leaves is <code>(row_index, cleaned_description, amount)</code>, and every outbound payload is written to a local audit log so it can be verified after the fact.
         </p>
       </div>
       <div class="panel">
@@ -130,9 +130,9 @@
           <div class="meta">by design</div>
         </div>
         <ul class="priv">
-          <li><span class="m no">✗</span><span><b>Never:</b> account numbers, BSBs, card numbers, balances, names, references, memos — regex-scrubbed, every digit run removed</span></li>
-          <li><span class="m no">✗</span><span><b>Never:</b> CSV inputs, the SQLite database, Excel files, or logs into git — blocked by pre-commit hooks</span></li>
-          <li><span class="m yes">✓</span><span><b>Only:</b> anonymous merchant-and-amount pairs to OpenRouter for categorisation — a stream that could belong to anyone</span></li>
+          <li><span class="m no">✗</span><span><b>Never:</b> account numbers, BSBs, card numbers, balances, names, references, memos: regex-scrubbed, every digit run removed</span></li>
+          <li><span class="m no">✗</span><span><b>Never:</b> CSV inputs, the SQLite database, Excel files, or logs into git: blocked by pre-commit hooks</span></li>
+          <li><span class="m yes">✓</span><span><b>Only:</b> anonymous merchant-and-amount pairs to OpenRouter for categorisation: a stream that could belong to anyone</span></li>
           <li><span class="m yes">✓</span><span><b>Only:</b> the monthly Excel workbook to your own Google Drive, via a service account you control</span></li>
         </ul>
       </div>
@@ -143,14 +143,14 @@
   <section class="d-sec wrap">
     <div class="sec-label rv"><b>03</b> / ENGINEERING HIGHLIGHTS</div>
     <div class="feats rv d1">
-      <div class="feat"><h4><span class="fx">F-01</span>Content-based bank detection</h4><p>Files are matched to a bank by their contents, not their upload slot — wrong-slot uploads still parse, unknown formats are rejected with a clear message.</p></div>
+      <div class="feat"><h4><span class="fx">F-01</span>Content-based bank detection</h4><p>Files are matched to a bank by their contents, not their upload slot: wrong-slot uploads still parse, unknown formats are rejected with a clear message.</p></div>
       <div class="feat"><h4><span class="fx">F-02</span>Idempotent pipeline</h4><p>File and transaction fingerprinting make re-runs a no-op: no duplicate rows, no wasted categorisation calls, no changed output.</p></div>
-      <div class="feat"><h4><span class="fx">F-03</span>Internal transfer netting</h4><p>Money moved between own accounts is matched as opposite-sign pairs and excluded from totals — and from the categorisation payload entirely.</p></div>
+      <div class="feat"><h4><span class="fx">F-03</span>Internal transfer netting</h4><p>Money moved between own accounts is matched as opposite-sign pairs and excluded from totals, and from the categorisation payload entirely.</p></div>
       <div class="feat"><h4><span class="fx">F-04</span>Subscription watch</h4><p>Recurring-merchant detection flags new subscriptions, price changes, and expected income that didn't arrive.</p></div>
-      <div class="feat"><h4><span class="fx">F-05</span>Offline-tolerant phone PWA</h4><p>Client-side queue-and-retry holds an upload made while the laptop is asleep and retries until it lands — privately, over Tailscale HTTPS.</p></div>
+      <div class="feat"><h4><span class="fx">F-05</span>Offline-tolerant phone PWA</h4><p>Client-side queue-and-retry holds an upload made while the laptop is asleep and retries until it lands, privately, over Tailscale HTTPS.</p></div>
       <div class="feat"><h4><span class="fx">F-06</span>Always-on supervisor</h4><p>A ~15 MB Windows service probes both servers every 15 s, relaunches whichever is down, and snapshots the database weekly via SQLite's online-backup API.</p></div>
-      <div class="feat"><h4><span class="fx">F-07</span>Budget alerts, amount-free</h4><p>Per-category budgets fire at 80% and 100% — alert payloads carry only a category name and a percent, never amounts or descriptions.</p></div>
-      <div class="feat"><h4><span class="fx">F-08</span>Categoriser scorecard</h4><p>A monthly accuracy card built from recategorisation events shows whether the LLM categoriser — swappable via config, with automatic fallback — improves over time.</p></div>
+      <div class="feat"><h4><span class="fx">F-07</span>Budget alerts, amount-free</h4><p>Per-category budgets fire at 80% and 100%: alert payloads carry only a category name and a percent, never amounts or descriptions.</p></div>
+      <div class="feat"><h4><span class="fx">F-08</span>Categoriser scorecard</h4><p>A monthly accuracy card built from recategorisation events shows whether the LLM categoriser (swappable via config, with automatic fallback) improves over time.</p></div>
     </div>
   </section>
 
@@ -170,10 +170,6 @@
         <img src="assets/financetracker-settings-dark.png" alt="Settings screen: per-notification-type toggles for statement processing, sorting, and backup events" loading="lazy" />
         <figcaption><b>Settings</b> · notification toggles</figcaption>
       </figure>
-      <figure class="screen">
-        <img src="assets/financetracker-overview-light.png" alt="Overview screen in the light theme" loading="lazy" />
-        <figcaption><b>Overview</b> · light theme</figcaption>
-      </figure>
     </div>
   </section>
 
@@ -184,8 +180,8 @@
       <span class="corner tl"></span><span class="corner br"></span>
       <div class="qr-copy">
         <div class="eyebrow">Self-hosted by design</div>
-        <h2>The real thing is self-hosted — this is the demo</h2>
-        <p>The actual app runs on your own machine, with your own keys, and the data never leaves your hardware. This demo is the same frontend, fed entirely by synthetic data — click every screen, flip the theme, run a search. Nothing here is real spending.</p>
+        <h2>The real thing is self-hosted: this is the demo</h2>
+        <p>The actual app runs on your own machine, with your own keys, and the data never leaves your hardware. This demo is the same frontend, fed entirely by synthetic data: click every screen, flip the theme, run a search. Nothing here is real spending.</p>
         <a class="qr-url" href="demo/" target="_blank" rel="noopener">
           Open the live demo
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
