@@ -72,6 +72,8 @@ html[data-theme="light"] .sun { display: none; } html[data-theme="light"] .moon 
 }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px -12px var(--primary); }
 .btn svg { width: 15px; height: 15px; }
+.btn.ghost { background: transparent; border-color: var(--line-2); color: var(--ink); }
+.btn.ghost:hover { border-color: var(--primary); color: var(--primary); box-shadow: none; }
 
 /* Phone: the full back-link + theme toggle + action button cannot share 375px.
    Drop the "/ project" suffix and compact the button so the header fits the
@@ -82,6 +84,9 @@ html[data-theme="light"] .sun { display: none; } html[data-theme="light"] .moon 
   .back span { display: none; }
   .btn { padding: 9px 12px; font-size: 12px; gap: 6px; }
   .btn svg { width: 13px; height: 13px; }
+  /* Two header buttons never fit a phone: keep the primary CTA, drop the ghost
+     (the same link exists in the page body). */
+  .btn.ghost { display: none; }
 }
 
 /* ---------- HERO ---------- */
