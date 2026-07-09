@@ -291,9 +291,11 @@ section { position: relative; }
    "Privacy-first FinTech PWA" pill never overlaps the video. */
 .shot video.shot-img { height: auto; width: 86%; max-width: 620px; margin: 58px 0 30px; aspect-ratio: 1280 / 800; background: #f4f7f5; }
 @media (max-width: 860px) { .shot video.shot-img { height: auto; width: 88%; margin: 52px 0 24px; } }
-/* Portrait phone clips (FirstMove) keep the sizing of the old portrait
-   screenshot - narrow and centred, so the corner tag never overlaps. */
-.shot video.shot-img.portrait { height: 88%; max-height: 460px; width: auto; max-width: 72%; margin: 0; aspect-ratio: 390 / 844; background: #0a0a0c; }
+/* Portrait phone clips (NutriScan, FirstMove): narrow and centred, with a top
+   margin so the corner tag pill never clips the phone. Fixed height on purpose:
+   a percentage height inside the auto-height .shot cell resolves inconsistently
+   on narrow screens and lets the clip ride up under the tag. */
+.shot video.shot-img.portrait { height: 430px; width: auto; max-width: 72%; margin: 52px 0 8px; aspect-ratio: 390 / 844; background: #0a0a0c; }
 @media (max-width: 860px) { .shot { border-right: none; border-bottom: 1px solid var(--line); min-height: 300px; } .shot .shot-img { height: 80%; } }
 .shot .ph {
   font-family: var(--font-mono);
@@ -533,7 +535,7 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
         <div class="shot-bg" style="background-image:url('assets/nutriscan-card-poster.png')"></div>
         <span class="corner tl"></span><span class="corner br"></span>
         <span class="tag">HealthTech</span>
-        <video class="shot-img portrait" style="background:#0d1413;height:80%;max-height:430px;margin:52px 0 8px" autoplay muted loop playsinline preload="metadata" poster="assets/nutriscan-card-poster.png" aria-label="NutriScan live demo: a nutrition label photo is cropped, read by AI vision into macros, and logged to the day's tracker">
+        <video class="shot-img portrait" style="background:#0d1413" autoplay muted loop playsinline preload="metadata" poster="assets/nutriscan-card-poster.png" aria-label="NutriScan live demo: a nutrition label photo is cropped, read by AI vision into macros, and logged to the day's tracker">
           <source src="assets/nutriscan-card.webm" type="video/webm" />
           <img class="shot-img" src="assets/nutriscan-screen-results.png" alt="NutriScan scan result: calories, protein, carbs and fat read from a nutrition label" loading="lazy" />
         </video>
