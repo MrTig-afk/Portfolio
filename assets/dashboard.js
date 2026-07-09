@@ -14,7 +14,9 @@
 (function () {
   var el = document.getElementById('qr');
   if (!el) return;
-  var url = el.getAttribute('data-url');
+  // Relative data-urls (e.g. "demo/") resolve against the deployed origin, so
+  // the QR always points at THIS site's copy — no hardcoded domain.
+  var url = new URL(el.getAttribute('data-url'), window.location.href).href;
   function fallback() {
     el.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=188x188&margin=0&data=' +
       encodeURIComponent(url) + '" alt="QR code linking to ' + url + '" width="188" height="188" />';

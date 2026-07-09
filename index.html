@@ -286,6 +286,7 @@ section { position: relative; }
   border: 1px solid rgba(255,255,255,.16);
   box-shadow: 0 26px 60px -22px rgba(0,0,0,.72);
 }
+video.shot-img { aspect-ratio: 1280 / 800; height: auto; max-width: 88%; background: #f4f7f5; }
 @media (max-width: 860px) { .shot { border-right: none; border-bottom: 1px solid var(--line); min-height: 300px; } .shot .shot-img { height: 80%; } }
 .shot .ph {
   font-family: var(--font-mono);
@@ -486,10 +487,13 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
     <!-- FinanceTracker -->
     <article class="card reveal">
       <div class="shot has-img">
-        <div class="shot-bg" style="background-image:url('assets/financetracker-overview-dark.png')"></div>
+        <div class="shot-bg" style="background-image:url('assets/financetracker-card-poster.png')"></div>
         <span class="corner tl"></span><span class="corner br"></span>
         <span class="tag">Privacy-first FinTech PWA</span>
-        <img class="shot-img" src="assets/financetracker-overview-dark.png" alt="FinanceTracker overview screen showing the month's spending donut and category breakdown" loading="lazy" />
+        <video class="shot-img" autoplay muted loop playsinline preload="metadata" poster="assets/financetracker-card-poster.png" aria-label="FinanceTracker live demo: animated spending donut, category breakdown, and theme toggle">
+          <source src="assets/financetracker-card.webm" type="video/webm" />
+          <img class="shot-img" src="assets/financetracker-overview-dark.png" alt="FinanceTracker overview screen showing the month's spending donut and category breakdown" loading="lazy" />
+        </video>
       </div>
       <div class="card-body">
         <div class="card-no"><b>P-01</b> / financetracker</div>
@@ -504,11 +508,14 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
           <span class="chip">Tailscale</span>
         </div>
         <div class="card-foot">
+          <a class="linkbtn" href="demo/" target="_blank" rel="noopener">
+            Live demo &middot; synthetic data
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
           <a class="linkbtn" href="https://github.com/MrTig-afk/FinanceTracker" target="_blank" rel="noopener">
             Source on GitHub
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
           </a>
-          <span class="linkbtn muted" style="cursor:default">Self-hosted by design</span>
         </div>
       </div>
     </article>
@@ -697,6 +704,12 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
 /* ---------- Scroll reveal ---------- */
 (function () {
   var els = document.querySelectorAll('.reveal');
+  // Respect reduced-motion: freeze the project-card demo clips on their poster.
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('video.shot-img').forEach(function (v) {
+      v.removeAttribute('autoplay'); v.pause();
+    });
+  }
   if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) {
