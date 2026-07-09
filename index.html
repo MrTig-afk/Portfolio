@@ -143,6 +143,15 @@ header {
 .nav-links a::before { content: ""; color: var(--primary); opacity: .55; }
 .nav-links a:hover { color: var(--ink); }
 @media (max-width: 760px) { .nav-links { display: none; } }
+.nav-socials { display: flex; align-items: center; gap: 16px; }
+.nav-socials a { color: var(--ink-2); display: grid; place-items: center; transition: color .2s, transform .15s; }
+.nav-socials a:hover { color: var(--primary); transform: translateY(-1px); }
+.nav-socials svg { width: 17px; height: 17px; display: block; }
+@media (max-width: 760px) { .nav-socials { display: none; } }
+.mobile-socials { display: flex; gap: 26px; padding: 16px 24px; }
+.mobile-menu .mobile-socials a { color: var(--ink-2); transition: color .2s; padding: 4px; border-bottom: none; }
+.mobile-socials a:hover { color: var(--primary); }
+.mobile-socials svg { width: 20px; height: 20px; display: block; }
 .hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 38px; height: 38px; background: none; border: none; cursor: pointer; padding: 6px; border-radius: 8px; }
 .hamburger span { display: block; height: 2px; background: var(--ink); border-radius: 2px; transition: transform .25s, opacity .25s; }
 @media (max-width: 760px) { .hamburger { display: flex; } }
@@ -428,7 +437,6 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
 .foot-links { display: flex; gap: 22px; align-items: center; }
 .foot-links a { font-family: var(--font-mono); font-size: 12px; color: var(--ink-2); transition: color .2s; }
 .foot-links a:hover { color: var(--primary); }
-.foot-links .foot-ico svg { width: 17px; height: 17px; display: block; }
 
 /* ============================== REVEAL ============================== */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
@@ -454,6 +462,23 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
         <a href="#skills">skills</a>
         <a href="#contact">contact</a>
       </nav>
+      <div class="nav-socials" aria-label="Social links">
+        <a href="https://github.com/MrTig-afk" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/kaushikn2002" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.25 8.25h4.5V24h-4.5V8.25zM8.5 8.25h4.31v2.15h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V24h-4.5v-7.13c0-1.7-.03-3.88-2.37-3.88-2.37 0-2.73 1.85-2.73 3.76V24h-4.5V8.25z"/></svg>
+        </a>
+        <a href="mailto:kaushiknaru2002@gmail.com" aria-label="Email" title="Email">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.24-8 5-8-5V6.5l8 5 8-5v1.74z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/kaushik_n__/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="0.4" fill="currentColor" stroke="currentColor"/></svg>
+        </a>
+        <a href="https://medium.com/@kaushiknaru2002" target="_blank" rel="noopener" aria-label="Medium" title="Medium">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.77 6.77 0 1 1-13.54 0 6.77 6.77 0 0 1 13.54 0zm7.42 0c0 3.52-1.51 6.38-3.38 6.38s-3.39-2.86-3.39-6.38 1.52-6.38 3.39-6.38 3.38 2.86 3.38 6.38zM24 12c0 3.15-.53 5.71-1.19 5.71s-1.19-2.56-1.19-5.71.53-5.71 1.19-5.71S24 8.85 24 12z"/></svg>
+        </a>
+      </div>
       <button class="hamburger" id="menuToggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -467,6 +492,23 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
     <a href="#projects">projects</a>
     <a href="#skills">skills</a>
     <a href="#contact">contact</a>
+    <div class="mobile-socials" aria-label="Social links">
+      <a href="https://github.com/MrTig-afk" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/kaushikn2002" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.25 8.25h4.5V24h-4.5V8.25zM8.5 8.25h4.31v2.15h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V24h-4.5v-7.13c0-1.7-.03-3.88-2.37-3.88-2.37 0-2.73 1.85-2.73 3.76V24h-4.5V8.25z"/></svg>
+      </a>
+      <a href="mailto:kaushiknaru2002@gmail.com" aria-label="Email" title="Email">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.24-8 5-8-5V6.5l8 5 8-5v1.74z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/kaushik_n__/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="0.4" fill="currentColor" stroke="currentColor"/></svg>
+      </a>
+      <a href="https://medium.com/@kaushiknaru2002" target="_blank" rel="noopener" aria-label="Medium" title="Medium">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.77 6.77 0 1 1-13.54 0 6.77 6.77 0 0 1 13.54 0zm7.42 0c0 3.52-1.51 6.38-3.38 6.38s-3.39-2.86-3.39-6.38 1.52-6.38 3.39-6.38 3.38 2.86 3.38 6.38zM24 12c0 3.15-.53 5.71-1.19 5.71s-1.19-2.56-1.19-5.71.53-5.71 1.19-5.71S24 8.85 24 12z"/></svg>
+      </a>
+    </div>
   </nav>
 </header>
 
@@ -641,23 +683,6 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
       <div class="sec-index reveal"><b>03</b> / CONTACT</div>
       <h2 class="reveal d1" style="margin-top:14px">Let’s build something <span class="accent">data-driven.</span></h2>
       <p class="reveal d1">Currently open to data engineering and ML roles. Have a pipeline to wrangle or an idea to ship? Drop me a line.</p>
-      <div class="contact-social reveal d2">
-<a class="soc" href="https://github.com/MrTig-afk" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
-        </a>
-        <a class="soc" href="https://www.linkedin.com/in/kaushikn2002" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.25 8.25h4.5V24h-4.5V8.25zM8.5 8.25h4.31v2.15h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V24h-4.5v-7.13c0-1.7-.03-3.88-2.37-3.88-2.37 0-2.73 1.85-2.73 3.76V24h-4.5V8.25z"/></svg>
-        </a>
-        <a class="soc" href="mailto:kaushiknaru2002@gmail.com" aria-label="Email" title="Email">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.24-8 5-8-5V6.5l8 5 8-5v1.74z"/></svg>
-        </a>
-        <a class="soc" href="https://www.instagram.com/kaushik_n__/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="0.4" fill="currentColor" stroke="currentColor"/></svg>
-        </a>
-        <a class="soc" href="https://medium.com/@kaushiknaru2002" target="_blank" rel="noopener" aria-label="Medium" title="Medium">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.77 6.77 0 1 1-13.54 0 6.77 6.77 0 0 1 13.54 0zm7.42 0c0 3.52-1.51 6.38-3.38 6.38s-3.39-2.86-3.39-6.38 1.52-6.38 3.39-6.38 3.38 2.86 3.38 6.38zM24 12c0 3.15-.53 5.71-1.19 5.71s-1.19-2.56-1.19-5.71.53-5.71 1.19-5.71S24 8.85 24 12z"/></svg>
-        </a>
-      </div>
     </div>
 
     <form class="form reveal d1" id="contactForm" novalidate>
@@ -696,21 +721,7 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
     <div class="foot-links">
       <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
-      <a class="foot-ico" href="https://github.com/MrTig-afk" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
-      </a>
-      <a class="foot-ico" href="https://www.linkedin.com/in/kaushikn2002" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.25 8.25h4.5V24h-4.5V8.25zM8.5 8.25h4.31v2.15h.06c.6-1.14 2.07-2.34 4.26-2.34 4.56 0 5.4 3 5.4 6.9V24h-4.5v-7.13c0-1.7-.03-3.88-2.37-3.88-2.37 0-2.73 1.85-2.73 3.76V24h-4.5V8.25z"/></svg>
-      </a>
-      <a class="foot-ico" href="mailto:kaushiknaru2002@gmail.com" aria-label="Email" title="Email">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.24-8 5-8-5V6.5l8 5 8-5v1.74z"/></svg>
-      </a>
-      <a class="foot-ico" href="https://www.instagram.com/kaushik_n__/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="0.4" fill="currentColor" stroke="currentColor"/></svg>
-      </a>
-      <a class="foot-ico" href="https://medium.com/@kaushiknaru2002" target="_blank" rel="noopener" aria-label="Medium" title="Medium">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.77 6.77 0 1 1-13.54 0 6.77 6.77 0 0 1 13.54 0zm7.42 0c0 3.52-1.51 6.38-3.38 6.38s-3.39-2.86-3.39-6.38 1.52-6.38 3.39-6.38 3.38 2.86 3.38 6.38zM24 12c0 3.15-.53 5.71-1.19 5.71s-1.19-2.56-1.19-5.71.53-5.71 1.19-5.71S24 8.85 24 12z"/></svg>
-      </a>
+      <a href="#contact">Contact</a>
     </div>
   </div>
 </footer>
