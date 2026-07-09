@@ -291,6 +291,9 @@ section { position: relative; }
    "Privacy-first FinTech PWA" pill never overlaps the video. */
 .shot video.shot-img { height: auto; width: 86%; max-width: 620px; margin: 58px 0 30px; aspect-ratio: 1280 / 800; background: #f4f7f5; }
 @media (max-width: 860px) { .shot video.shot-img { height: auto; width: 88%; margin: 52px 0 24px; } }
+/* Portrait phone clips (FirstMove) keep the sizing of the old portrait
+   screenshot - narrow and centred, so the corner tag never overlaps. */
+.shot video.shot-img.portrait { height: 88%; max-height: 460px; width: auto; max-width: 72%; margin: 0; aspect-ratio: 390 / 844; background: #0a0a0c; }
 @media (max-width: 860px) { .shot { border-right: none; border-bottom: 1px solid var(--line); min-height: 300px; } .shot .shot-img { height: 80%; } }
 .shot .ph {
   font-family: var(--font-mono);
@@ -527,10 +530,13 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
     <!-- NutriScan -->
     <article class="card reveal d1">
       <div class="shot has-img">
-        <div class="shot-bg" style="background-image:url('assets/nutriscan-phone.jpeg')"></div>
+        <div class="shot-bg" style="background-image:url('assets/nutriscan-card-poster.png')"></div>
         <span class="corner tl"></span><span class="corner br"></span>
         <span class="tag">HealthTech</span>
-        <img class="shot-img" src="assets/nutriscan-phone.jpeg" alt="NutriScan sign-in screen" loading="lazy" />
+        <video class="shot-img" autoplay muted loop playsinline preload="metadata" poster="assets/nutriscan-card-poster.png" aria-label="NutriScan live app: passwordless sign-in screen with an email being typed">
+          <source src="assets/nutriscan-card.webm" type="video/webm" />
+          <img class="shot-img" src="assets/nutriscan-signin.png" alt="NutriScan sign-in screen" loading="lazy" />
+        </video>
       </div>
       <div class="card-body">
         <div class="card-no"><b>P-02</b> / nutriscan</div>
@@ -555,10 +561,13 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
     <!-- FirstMove -->
     <article class="card reveal d1">
       <div class="shot has-img">
-        <div class="shot-bg" style="background-image:url('assets/firstmove-phone.jpeg')"></div>
+        <div class="shot-bg" style="background-image:url('assets/firstmove-card-poster.png')"></div>
         <span class="corner tl"></span><span class="corner br"></span>
         <span class="tag">Mobile / Game</span>
-        <img class="shot-img" src="assets/firstmove-phone.jpeg" alt="FirstMove loading screen" loading="lazy" />
+        <video class="shot-img portrait" autoplay muted loop playsinline preload="metadata" poster="assets/firstmove-card-poster.png" aria-label="FirstMove live demo: two fingers press the screen, the finger chooser counts down and picks one, and a prompt card is drawn">
+          <source src="assets/firstmove-card.webm" type="video/webm" />
+          <img class="shot-img" src="assets/firstmove-screen-card.png" alt="FirstMove card reveal showing an Icebreakers prompt" loading="lazy" />
+        </video>
       </div>
       <div class="card-body">
         <div class="card-no"><b>P-03</b> / firstmove</div>
