@@ -286,7 +286,11 @@ section { position: relative; }
   border: 1px solid rgba(255,255,255,.16);
   box-shadow: 0 26px 60px -22px rgba(0,0,0,.72);
 }
-video.shot-img { aspect-ratio: 1280 / 800; height: auto; max-width: 88%; background: #f4f7f5; }
+/* The demo clip is landscape and fills more of the shot than the old portrait
+   screenshot did — size it by width and push it below the corner tag so the
+   "Privacy-first FinTech PWA" pill never overlaps the video. */
+.shot video.shot-img { height: auto; width: 86%; max-width: 620px; margin: 58px 0 30px; aspect-ratio: 1280 / 800; background: #f4f7f5; }
+@media (max-width: 860px) { .shot video.shot-img { height: auto; width: 88%; margin: 52px 0 24px; } }
 @media (max-width: 860px) { .shot { border-right: none; border-bottom: 1px solid var(--line); min-height: 300px; } .shot .shot-img { height: 80%; } }
 .shot .ph {
   font-family: var(--font-mono);

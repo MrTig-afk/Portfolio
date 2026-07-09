@@ -73,6 +73,17 @@ html[data-theme="light"] .sun { display: none; } html[data-theme="light"] .moon 
 .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px -12px var(--primary); }
 .btn svg { width: 15px; height: 15px; }
 
+/* Phone: the full back-link + theme toggle + action button cannot share 375px.
+   Drop the "/ project" suffix and compact the button so the header fits the
+   viewport — otherwise the whole document grows wider than the screen and
+   every section below appears pushed to the left. */
+@media (max-width: 640px) {
+  .nav { gap: 10px; }
+  .back span { display: none; }
+  .btn { padding: 9px 12px; font-size: 12px; gap: 6px; }
+  .btn svg { width: 13px; height: 13px; }
+}
+
 /* ---------- HERO ---------- */
 .d-hero { padding-top: clamp(40px, 7vh, 72px); padding-bottom: clamp(28px, 4vh, 44px); }
 .eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--primary); display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
