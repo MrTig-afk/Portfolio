@@ -47,7 +47,8 @@
 .feat p { font-size: 13px; color: var(--ink-2); line-height: 1.55; }
 
 /* ---------- page-specific: screens gallery ---------- */
-.screens { display: grid; grid-template-columns: 1.55fr 1fr; gap: 20px; align-items: start; }
+.screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+.screen.wide { grid-column: 1 / -1; max-width: 860px; justify-self: center; }
 @media (max-width: 700px) { .screens { grid-template-columns: 1fr; } }
 .screen img {
   display: block; width: 100%; height: auto;
@@ -157,13 +158,21 @@
   <section class="d-sec wrap">
     <div class="sec-label rv"><b>04</b> / SCREENS</div>
     <div class="screens rv d1">
-      <figure class="screen">
+      <figure class="screen wide">
         <img src="assets/nutriscan-launch-card.webp" alt="NutriScan launch visual: the Scan tab on a phone with the upload-label flow, next to the tagline 'Photograph a label. Get the macros.'" loading="lazy" />
-        <figcaption><b>Scan tab</b> · upload → crop → optimize → analyze</figcaption>
+        <figcaption><b>Launch card</b> · photograph a label, get the macros</figcaption>
       </figure>
       <figure class="screen">
-        <img src="assets/nutriscan-results.png" alt="NutriScan scan result: a nutrition label read into calories, protein, carbs and fat, ready to log" loading="lazy" />
-        <figcaption><b>Scan result</b> · macros read from the label</figcaption>
+        <img src="assets/nutriscan-screen-crop.png" alt="Crop screen: a nutrition label photo with draggable corner handles isolating the label region" loading="lazy" />
+        <figcaption><b>Crop</b> · isolate the label</figcaption>
+      </figure>
+      <figure class="screen">
+        <img src="assets/nutriscan-screen-results.png" alt="Scan result: calories, fat, carbs, sugars, fibre, protein and sodium read from the label, with a custom serving calculator" loading="lazy" />
+        <figcaption><b>Result</b> · macros read by AI vision</figcaption>
+      </figure>
+      <figure class="screen">
+        <img src="assets/nutriscan-screen-tracker.png" alt="Tracker: daily goal bars for calories, protein, carbs, fat and fibre filled by the logged item" loading="lazy" />
+        <figcaption><b>Tracker</b> · logged against daily goals</figcaption>
       </figure>
     </div>
   </section>
