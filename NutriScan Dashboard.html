@@ -3,11 +3,63 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NutriScan · Analytics</title>
+<title>NutriScan · Case study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/dashboard.css" />
+<style>
+/* ---------- page-specific: scan pipeline flow ---------- */
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.flow .stage {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+  color: var(--ink-2); background: var(--surface-3); border: 1px solid var(--line);
+  padding: 9px 14px; border-radius: 8px;
+}
+.flow .stage.hot {
+  color: var(--primary); background: var(--primary-soft);
+  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
+}
+.flow .arr { font-family: var(--font-mono); font-size: 13px; color: var(--ink-3); }
+.flow-note { margin-top: 20px; font-size: 14px; color: var(--ink-2); line-height: 1.65; }
+.flow-note b { color: var(--ink); font-weight: 600; }
+.flow-note code {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--primary);
+  background: var(--primary-soft); border-radius: 5px; padding: 2px 7px;
+}
+
+/* ---------- page-specific: auth checklist ---------- */
+.priv { display: flex; flex-direction: column; gap: 13px; }
+.priv li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: var(--ink-2); line-height: 1.55; list-style: none; }
+.priv .m { font-family: var(--font-mono); font-weight: 700; flex-shrink: 0; width: 16px; text-align: center; }
+.priv .m.no { color: #ff8b82; }
+.priv .m.yes { color: var(--primary); }
+.priv b { color: var(--ink); font-weight: 600; }
+
+/* ---------- page-specific: feature grid ---------- */
+.feats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+@media (max-width: 980px) { .feats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .feats { grid-template-columns: 1fr; } }
+.feat { background: var(--surface-2); padding: 22px 20px; transition: background .25s; }
+.feat:hover { background: var(--surface-3); }
+.feat h4 { font-size: 14.5px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
+.feat h4 .fx { color: var(--primary); font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; display: block; margin-bottom: 8px; }
+.feat p { font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+
+/* ---------- page-specific: screens gallery ---------- */
+.screens { display: grid; grid-template-columns: 1.55fr 1fr; gap: 20px; align-items: start; }
+@media (max-width: 700px) { .screens { grid-template-columns: 1fr; } }
+.screen img {
+  display: block; width: 100%; height: auto;
+  border-radius: 16px; border: 1px solid var(--line-2);
+  box-shadow: 0 22px 48px -24px rgba(0,0,0,.55);
+}
+.screen figcaption {
+  margin-top: 12px; font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .06em; color: var(--ink-3); text-align: center;
+}
+.screen figcaption b { color: var(--ink-2); font-weight: 600; }
+</style>
 </head>
 <body>
 
@@ -33,33 +85,104 @@
 <main>
   <!-- HERO -->
   <section class="d-hero wrap">
-    <div class="eyebrow rv">Product analytics · HealthTech</div>
+    <div class="eyebrow rv">Engineering case study · HealthTech</div>
     <h1 class="rv d1">NutriScan</h1>
-    <p class="rv d2">A live snapshot of traffic to NutriScan, pulled straight from Vercel Web Analytics.</p>
-    <div class="sample-pill live rv d3"><span class="d"></span> Vercel Web Analytics · vs previous period</div>
+    <p class="rv d2">Photograph a nutrition label and it becomes tracked macros: AI vision reads the calories, protein, carbs, fat and fibre straight off the packet. No barcode database, no manual typing. Around that sits a full tracker: daily goals, a food library, one-tap meal templates, weekly trends, and an AI assistant that already knows your log.</p>
+    <div class="sample-pill live rv d3"><span class="d"></span> Live on Vercel · installable PWA · free to try</div>
   </section>
 
-  <!-- KPIS -->
+  <!-- BY DESIGN -->
   <section class="d-sec wrap">
-    <div class="sec-label rv"><b>01</b> / TRAFFIC · VERCEL WEB ANALYTICS</div>
-    <div class="kpis three rv d1">
-      <div class="kpi"><div class="k">Visitors</div><div class="v">4</div><div class="delta">▲ 100%</div></div>
-      <div class="kpi"><div class="k">Page Views</div><div class="v">4</div><div class="delta flat">0%</div></div>
-      <div class="kpi"><div class="k">Bounce Rate</div><div class="v">100<span class="u">%</span></div><div class="delta down">▲ 50%</div></div>
+    <div class="sec-label rv"><b>01</b> / BY THE NUMBERS</div>
+    <div class="kpis rv d1">
+      <div class="kpi"><div class="k">Postgres tables</div><div class="v">11</div><div class="delta">every one under RLS</div></div>
+      <div class="kpi"><div class="k">Vision models</div><div class="v">2</div><div class="delta flat">primary + fallback</div></div>
+      <div class="kpi"><div class="k">Free scans / day</div><div class="v">10</div><div class="delta">keeps the AI bill bounded</div></div>
+      <div class="kpi"><div class="k">Passwords stored</div><div class="v">0</div><div class="delta">OAuth &amp; email codes only</div></div>
     </div>
   </section>
 
-  <!-- QR -->
+  <!-- SCAN PIPELINE -->
   <section class="d-sec wrap">
-    <div class="sec-label rv"><b>02</b> / TRY IT</div>
+    <div class="sec-label rv"><b>02</b> / FROM PHOTO TO MACROS</div>
+    <div class="panels rv d1">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>The scan pipeline</h3>
+          <div class="meta">client does the prep, AI does the reading</div>
+        </div>
+        <div class="flow">
+          <span class="stage">photo</span><span class="arr">→</span>
+          <span class="stage">crop</span><span class="arr">→</span>
+          <span class="stage hot">resize + grayscale</span><span class="arr">→</span>
+          <span class="stage hot">Gemini vision</span><span class="arr">→</span>
+          <span class="stage">parse &amp; normalize</span><span class="arr">→</span>
+          <span class="stage">log</span>
+        </div>
+        <p class="flow-note">
+          Images are prepared <b>in the browser</b> before they ever leave the phone: a touch-friendly canvas cropper isolates the label, then the image is resized and grayscaled for smaller uploads, faster scans, and cheaper AI calls. <b>Gemini 2.5 Flash</b> reads the label, with automatic fallback to 2.0 Flash if the primary model fails, and the response is parsed and normalized into clean macros (<code>kcal · protein · carbs · fat · fibre</code>) before anything is shown or logged.
+        </p>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Auth without passwords</h3>
+          <div class="meta">Supabase · verified server-side</div>
+        </div>
+        <ul class="priv">
+          <li><span class="m no">✗</span><span><b>No passwords, ever:</b> sign in with Google OAuth or a 6-digit emailed code. Nothing to store, leak, or reset</span></li>
+          <li><span class="m yes">✓</span><span><b>Verified, not trusted:</b> ES256 JWTs are checked server-side against Supabase's JWKS on every request</span></li>
+          <li><span class="m yes">✓</span><span><b>Isolated at the storage layer:</b> each request binds the user to the database session, and row-level security policies do the rest. App bugs can't read another user's rows</span></li>
+          <li><span class="m yes">✓</span><span><b>Deletable:</b> full account deletion is a first-class Settings action</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENGINEERING HIGHLIGHTS -->
+  <section class="d-sec wrap">
+    <div class="sec-label rv"><b>03</b> / ENGINEERING HIGHLIGHTS</div>
+    <div class="feats rv d1">
+      <div class="feat"><h4><span class="fx">F-01</span>Row-level security everywhere</h4><p>All 11 tables carry per-user RLS policies, so isolation is enforced by Postgres itself, not by remembering a WHERE clause in every query.</p></div>
+      <div class="feat"><h4><span class="fx">F-02</span>Vision with a fallback</h4><p>Gemini 2.5 Flash is the primary label reader; if it errors, the scan retries on 2.0 Flash automatically. Users see macros, not model outages.</p></div>
+      <div class="feat"><h4><span class="fx">F-03</span>Context-aware AI assistant</h4><p>A Groq-powered chat tab that's fed today's log, remaining macros and 7-day averages. Multi-turn, with server-side safety guardrails.</p></div>
+      <div class="feat"><h4><span class="fx">F-04</span>Meal templates</h4><p>Multi-select foods from the library into a named template, then log an entire breakfast in one tap instead of four.</p></div>
+      <div class="feat"><h4><span class="fx">F-05</span>Real push notifications</h4><p>VAPID web push with per-user preferences: goal alerts, meal reminders and a weekly summary, each at a time the user picks.</p></div>
+      <div class="feat"><h4><span class="fx">F-06</span>User-controlled PWA updates</h4><p>New versions don't force-reload mid-log: a banner shows exactly what changed (from a versioned changelog) and the user applies it when ready.</p></div>
+      <div class="feat"><h4><span class="fx">F-07</span>Trends without a chart library</h4><p>The 7-day trends tab renders its charts as raw SVG: no charting dependency, full control over the visuals, smaller bundle.</p></div>
+      <div class="feat"><h4><span class="fx">F-08</span>Cost-capped by design</h4><p>A 10-scans-per-day limit per account keeps the vision API bill bounded while staying generous for real daily use.</p></div>
+    </div>
+  </section>
+
+  <!-- SCREENS -->
+  <section class="d-sec wrap">
+    <div class="sec-label rv"><b>04</b> / SCREENS</div>
+    <div class="screens rv d1">
+      <figure class="screen">
+        <img src="assets/nutriscan-launch-card.webp" alt="NutriScan launch visual: the Scan tab on a phone with the upload-label flow, next to the tagline 'Photograph a label. Get the macros.'" loading="lazy" />
+        <figcaption><b>Scan tab</b> · upload → crop → optimize → analyze</figcaption>
+      </figure>
+      <figure class="screen">
+        <img src="assets/nutriscan-signin.png" alt="NutriScan sign-in screen: email field for a 6-digit sign-in code, or continue with Google" loading="lazy" />
+        <figcaption><b>Sign-in</b> · email code or Google, no passwords</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- TRY IT -->
+  <section class="d-sec wrap">
+    <div class="sec-label rv"><b>05</b> / TRY IT</div>
     <div class="qr-wrap rv d1">
       <span class="corner tl"></span><span class="corner br"></span>
       <div class="qr-copy">
         <div class="eyebrow">Get it on your phone</div>
         <h2>Scan to open NutriScan</h2>
-        <p>Point your phone camera at the code to launch the live app instantly: no install needed, it runs as a PWA you can add to your home screen.</p>
+        <p>Point your phone camera at the code to launch the live app instantly: no install needed, it runs as a PWA you can add to your home screen. Every account gets 10 free scans a day.</p>
         <a class="qr-url" href="https://nutritional-tracker-delta.vercel.app/" target="_blank" rel="noopener">
           nutritional-tracker-delta.vercel.app
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+        <a class="qr-url" href="https://github.com/MrTig-afk/NutritionalTracker" target="_blank" rel="noopener" style="margin-top:8px">
+          github.com/MrTig-afk/NutritionalTracker
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
         </a>
       </div>
@@ -72,18 +195,19 @@
 
   <!-- STACK -->
   <section class="d-sec wrap">
-    <div class="sec-label rv"><b>03</b> / BUILT WITH</div>
+    <div class="sec-label rv"><b>06</b> / BUILT WITH</div>
     <div class="stack rv d1">
       <span class="chip">React 19</span><span class="chip">Vite</span><span class="chip">FastAPI</span>
       <span class="chip">Gemini 2.5 Flash</span><span class="chip">Groq</span><span class="chip">Neon Postgres</span>
-      <span class="chip">Supabase Auth</span><span class="chip">AWS S3</span><span class="chip">PWA / Workbox</span>
+      <span class="chip">Supabase Auth</span><span class="chip">AWS S3</span><span class="chip">Web Push / VAPID</span>
+      <span class="chip">PWA / Workbox</span><span class="chip">Vercel</span><span class="chip">Render</span>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap foot">
-    <div class="c">NutriScan · analytics dashboard</div>
+    <div class="c">NutriScan · engineering case study</div>
     <a href="index.html">← Back to portfolio</a>
   </div>
 </footer>
