@@ -1,0 +1,12 @@
+# Never apply text/CRLF normalization to binary assets (autocrlf was corrupting them).
+*.webm binary
+*.mp4  binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.gif  binary
+*.ico  binary
+*.woff  binary
+*.woff2 binary
+*.ttf  binary
