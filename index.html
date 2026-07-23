@@ -199,7 +199,7 @@ html[data-theme="light"] .icon-btn .moon { display: block; }
 .btn svg { width: 15px; height: 15px; }
 
 /* ============================== HERO ============================== */
-.hero { padding-top: clamp(72px, 12vh, 130px); padding-bottom: clamp(60px, 9vh, 110px); position: relative; }
+.hero { padding-top: clamp(72px, 12vh, 130px); padding-bottom: clamp(36px, 5vh, 64px); position: relative; }
 .hero-status {
   display: inline-flex; align-items: center; gap: 9px;
   font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
@@ -529,6 +529,13 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
   <p class="hero-sub reveal d2">
     I’m an <b>AI Engineer</b> who builds and ships <b>LLM-powered products</b>: structured extraction from messy real-world inputs, <b>multi-provider model routing</b>, and data boundaries that keep sensitive information out of third-party model calls.
   </p>
+  <div class="hero-cta reveal d3">
+    <a class="btn btn-primary" href="#projects">
+      View projects
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </a>
+    <a class="btn btn-ghost" href="#contact">Get in touch</a>
+  </div>
 </section>
 
 <!-- ============================== PROJECTS ============================== -->
