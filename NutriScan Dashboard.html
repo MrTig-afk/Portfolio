@@ -122,12 +122,13 @@
           <span class="stage">photo</span><span class="arr">→</span>
           <span class="stage">crop</span><span class="arr">→</span>
           <span class="stage hot">resize + grayscale</span><span class="arr">→</span>
+          <span class="stage">sniff, verify, re-encode</span><span class="arr">→</span>
           <span class="stage hot">Gemini vision</span><span class="arr">→</span>
-          <span class="stage">parse &amp; normalize</span><span class="arr">→</span>
+          <span class="stage">schema-check &amp; normalize</span><span class="arr">→</span>
           <span class="stage">log</span>
         </div>
         <p class="flow-note">
-          Images are prepared <b>in the browser</b> before they ever leave the phone: a touch-friendly canvas cropper isolates the label, then the image is resized and grayscaled for smaller uploads, faster scans, and cheaper AI calls. <b>Gemini 2.5 Flash</b> reads the label, with automatic fallback to 2.0 Flash if the primary model fails, and the response is parsed and normalized into clean macros (<code>kcal · protein · carbs · fat · fibre</code>) before anything is shown or logged.
+          <!-- auto:start -->Images are prepared <b>in the browser</b> before they ever leave the phone: a touch-friendly canvas cropper isolates the label, then the image is resized and grayscaled for smaller uploads, faster scans, and cheaper AI calls. On the server every upload passes <b>one validating gate</b>: the real format is read from the file's bytes (JPEG, PNG or WebP; the browser's label is ignored), dimensions are checked against a 30-megapixel cap before a pixel is decoded, and the image is re-encoded as a fresh JPEG with no metadata. Nothing else reaches storage or the model. <b>Gemini 2.5 Flash</b> reads the label, with automatic fallback to 3.6 Flash if the primary model fails, and its answer is checked against an explicit schema (allowed fields, sane numeric bounds; text printed on the photo is data, never instructions) and normalized into clean macros (<code>kcal · protein · carbs · fat · fibre</code>) before anything is shown or logged.<!-- auto:end -->
         </p>
       </div>
       <div class="panel">
@@ -151,17 +152,18 @@
     <div class="sec-label rv"><b>03</b> / ENGINEERING HIGHLIGHTS</div>
     <div class="feats rv d1">
       <div class="feat"><h4><span class="fx">F-01</span>Row-level security everywhere</h4><p>All 11 tables carry per-user RLS policies, so isolation is enforced by Postgres itself, not by remembering a WHERE clause in every query.</p></div>
-      <div class="feat"><h4><span class="fx">F-02</span>Vision with a fallback</h4><p>Gemini 2.5 Flash is the primary label reader; if it errors, the scan retries on 2.0 Flash automatically. Users see macros, not model outages.</p></div>
+      <div class="feat"><h4><span class="fx">F-02</span>Vision with a fallback</h4><p>Gemini 2.5 Flash is the primary label reader; if it errors, the scan retries on 3.6 Flash automatically, and the app waits out the server's full retry budget instead of re-sending. Users see macros, not model outages.</p></div>
       <div class="feat"><h4><span class="fx">F-03</span>Context-aware AI assistant</h4><p>A Groq-powered chat tab that's fed today's log, remaining macros and 7-day averages. Multi-turn, with server-side safety guardrails.</p></div>
       <div class="feat"><h4><span class="fx">F-04</span>Meal templates</h4><p>Multi-select foods from the library into a named template, then log an entire breakfast in one tap instead of four.</p></div>
       <div class="feat"><h4><span class="fx">F-05</span>Real push notifications</h4><p>VAPID web push with per-user preferences: goal alerts, meal reminders and a weekly summary, each at a time the user picks.</p></div>
       <div class="feat"><h4><span class="fx">F-06</span>User-controlled PWA updates</h4><p>New versions don't force-reload mid-log: a banner shows exactly what changed (from a versioned changelog) and the user applies it when ready.</p></div>
       <div class="feat"><h4><span class="fx">F-07</span>Trends without a chart library</h4><p>The 7-day trends tab renders its charts as raw SVG: no charting dependency, full control over the visuals, smaller bundle.</p></div>
-      <div class="feat"><h4><span class="fx">F-08</span>Cost-capped by design</h4><p>A 10-scans-per-day limit per account keeps the vision API bill bounded while staying generous for real daily use.</p></div>
+      <div class="feat"><h4><span class="fx">F-08</span>Cost-capped by design</h4><p>A 10-scans-per-day limit per account, plus per-user and per-IP burst caps checked before the paid call, keeps the vision API bill bounded while staying generous for real daily use.</p></div>
       <div class="feat"><h4><span class="fx">F-09</span>Abuse guards that block, not just alert</h4><p>One middleware: 300+ requests a minute or a 30-URL 404 walk from one IP earns a 10-minute 429, keyed on the Cloudflare-verified client IP. CORS stays outermost so blocked responses remain readable to the browser.</p></div>
       <div class="feat"><h4><span class="fx">F-10</span>Recycle bin inside Postgres</h4><p>SECURITY DEFINER BEFORE DELETE triggers on nine tables copy every deleted row as JSONB into a table the app role cannot read or purge. Retention is hard-coded at 30 days; explicit account deletion bypasses it via a transaction-local GUC.</p></div>
       <div class="feat"><h4><span class="fx">F-11</span>Two-layer account freeze</h4><p>60 verified deletes in ten minutes from one session: every route returns 423 instantly from an in-process lock, and a Supabase admin ban (issued off the event loop) makes it stick across restarts. Reversal is a deliberate runbook step.</p></div>
       <div class="feat"><h4><span class="fx">F-12</span>Two-channel observability</h4><p>ntfy.sh for ~25 hand-written ops events (quota, spikes, keepalive, blocks, freezes) with per-event cooldowns and rolling-window spike detection; Sentry for unhandled exceptions with stack trace and request context.</p></div>
+      <div class="feat"><h4><span class="fx">F-13</span>Uploads that cannot lie</h4><p>One server-side gate for every image: magic-byte format sniffing (the client's content-type is never trusted), polyglot rejection, a decompression-bomb cap, verify-then-decode, and a metadata-free re-encode. An HTML file named .jpg, a PNG declaring a 30000x30000 canvas, and a photo with "ignore the label" printed on it each have a test; the model's JSON is schema-checked and rejected, never clamped.</p></div>
     </div>
   </section>
 
