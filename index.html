@@ -262,6 +262,14 @@ section { position: relative; }
 .sec-head h2 { font-size: clamp(30px, 4.6vw, 50px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.04; }
 .sec-index { font-family: var(--font-mono); font-size: 13px; color: var(--ink-3); letter-spacing: .1em; }
 .sec-index b { color: var(--primary); }
+.sec-sub { max-width: 30ch; text-align: right; }
+/* Phones: the right-aligned desktop subtitle wraps into a ragged floating
+   block once .sec-head stacks, and the desktop section padding doubles up
+   into a large empty band between sections. */
+@media (max-width: 760px) {
+  .sec-sub { text-align: left; max-width: 44ch; }
+  .sec { padding-block: 56px; }
+}
 .divider { height: 1px; background: var(--line); width: 100%; }
 
 /* ============================== PROJECTS ============================== */
@@ -382,9 +390,10 @@ section { position: relative; }
 .skill-cell .label { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
 .skill-cell .num { font-family: var(--font-mono); font-size: 11px; color: var(--primary); letter-spacing: .1em; }
 .skill-cell .label h4 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+.skill-cell { min-width: 0; }
 .skill-cell ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
-.skill-cell li { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 13px; color: var(--ink-2); }
-.skill-cell li::before { content: ""; width: 5px; height: 5px; background: var(--primary); transform: rotate(45deg); flex-shrink: 0; opacity: .75; }
+.skill-cell li { display: flex; align-items: flex-start; gap: 10px; font-family: var(--font-mono); font-size: 13px; color: var(--ink-2); min-width: 0; overflow-wrap: anywhere; }
+.skill-cell li::before { content: ""; width: 5px; height: 5px; background: var(--primary); transform: rotate(45deg); flex-shrink: 0; opacity: .75; margin-top: 7px; }
 
 /* ============================== CONTACT ============================== */
 .contact { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 80px); align-items: start; }
@@ -705,7 +714,7 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
       <div class="sec-index reveal"><b>02</b> / TOOLKIT</div>
       <h2 class="reveal d1">Skills &amp; stack</h2>
     </div>
-    <p class="sec-index reveal d1" style="max-width:30ch;text-align:right">The languages, frameworks, and infrastructure I reach for.</p>
+    <p class="sec-index sec-sub reveal d1">The languages, frameworks, and infrastructure I reach for.</p>
   </div>
 
   <div class="skills-grid">
