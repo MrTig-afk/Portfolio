@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kaushik Narumanchi - AI Engineer</title>
+<title>Kaushik Narumanchi - Backend Engineer</title>
+<meta name="description" content="Backend engineer for AI systems in Melbourne. Multi-tenant APIs, idempotent data pipelines, and model integrations that fail safely. MSc Data Science at RMIT." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -227,6 +228,11 @@ html[data-theme="light"] .icon-btn .moon { display: block; }
 }
 .hero-sub b { color: var(--ink); font-weight: 600; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
+.oss-line { margin-top: 36px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; max-width: 62ch; }
+.oss-line .k { display: block; color: var(--primary); font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 5px; }
+.oss-line a { color: var(--ink-3); transition: color .2s; }
+.oss-line a:hover { color: var(--ink-2); }
+.oss-line b { color: var(--ink); font-weight: 600; }
 
 /* data strip */
 .datastrip {
@@ -307,6 +313,9 @@ section { position: relative; }
    a percentage height inside the auto-height .shot cell resolves inconsistently
    on narrow screens and lets the clip ride up under the tag. */
 .shot video.shot-img.portrait { height: 430px; width: auto; max-width: 72%; margin: 52px 0 8px; aspect-ratio: 390 / 844; background: #0a0a0c; }
+/* Editor recording (LinkedIn Formatter): wider than the 1280/800 default, so
+   pin the true aspect or the box letterboxes against the light background. */
+.shot video.shot-img.wide { aspect-ratio: 1280 / 632; background: #1e1e1e; }
 @media (max-width: 860px) { .shot { border-right: none; border-bottom: 1px solid var(--line); min-height: 300px; } .shot .shot-img { height: 80%; } }
 .shot .ph {
   font-family: var(--font-mono);
@@ -461,7 +470,7 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="Kaushik Narumanchi - home">
       <span class="glyph">K</span>
-      <span>Kaushik Narumanchi<small>AI ENGINEER</small></span>
+      <span>Kaushik Narumanchi<small>BACKEND ENGINEER</small></span>
     </a>
     <div class="nav-right">
       <nav class="nav-links" aria-label="Primary">
@@ -519,15 +528,11 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
   <div class="hero-status reveal">
     <span class="dot"></span> Available for new opportunities
   </div>
-  <!-- H1 options:
-       1. I build the products around the models.        (chosen)
-       2. I ship products with language models inside.
-       3. I put language models to work in real products. -->
   <h1 class="reveal d1">
-    I build the <span class="accent">products</span><br />around the models.
+    I build the <span class="accent">backend</span><br />around the models.
   </h1>
   <p class="hero-sub reveal d2">
-    I’m an <b>AI Engineer</b> who builds and ships <b>LLM-powered products</b>: structured extraction from messy real-world inputs, <b>multi-provider model routing</b>, and data boundaries that keep sensitive information out of third-party model calls.
+    I’m a <b>backend engineer</b> who builds the systems AI products stand on: <b>idempotent ingestion</b> of messy real-world input, multi-tenant APIs where <b>isolation is enforced at the query layer</b>, and model calls that fail safely instead of silently.
   </p>
   <div class="hero-cta reveal d3">
     <a class="btn btn-primary" href="#projects">
@@ -535,6 +540,10 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </a>
     <a class="btn btn-ghost" href="#contact">Get in touch</a>
+  </div>
+  <div class="oss-line reveal d3">
+    <span class="k">Open source contributor</span>
+    <a href="https://github.com/MrTig-afk" target="_blank" rel="noopener">5 PRs merged upstream, including 3 into Reactive Resume <b>(41k stars)</b> &middot; 3 packages on npm &amp; the VS&nbsp;Code Marketplace</a>
   </div>
 </section>
 
@@ -651,6 +660,40 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
         </div>
       </div>
     </article>
+
+    <!-- LinkedIn Formatter -->
+    <article class="card reveal d1">
+      <div class="shot has-img">
+        <div class="shot-bg" style="background-image:url('assets/formatter-card-poster.png')"></div>
+        <span class="corner tl"></span><span class="corner br"></span>
+        <span class="tag">Developer Tooling / MCP</span>
+        <video class="shot-img wide" autoplay muted loop playsinline preload="metadata" poster="assets/formatter-card-poster.png" aria-label="LinkedIn Formatter demo: a plain text file renders as a styled LinkedIn preview card beside the editor, and text styled from the card lands in the file as real Unicode">
+          <source src="assets/formatter-card.webm" type="video/webm" />
+          <img class="shot-img" src="assets/formatter-card-poster.png" alt="LinkedIn Formatter preview card rendered beside the editor in VS Code" loading="lazy" />
+        </video>
+      </div>
+      <div class="card-body">
+        <div class="card-no"><b>P-04</b> / linkedin-formatter</div>
+        <h3><a class="proj-link" href="https://marketplace.visualstudio.com/items?itemName=kaushiknaru.linkedin-formatter" target="_blank" rel="noopener">LinkedIn Formatter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10M7 17 17 7"/></svg></a></h3>
+        <p>One formatting core shipped as three published artifacts: a VS Code extension, a zero-dependency CLI on npm, and an MCP server that lets AI agents apply LinkedIn's Unicode styling over stdio with exact code points. The preview card is the editor: type into the rendered post and every keystroke lands in the file already styled.</p>
+        <div class="chips">
+          <span class="chip">TypeScript</span>
+          <span class="chip">MCP</span>
+          <span class="chip">esbuild</span>
+          <span class="chip">npm</span>
+          <span class="chip">VS Code API</span>
+        </div>
+        <div class="card-foot">
+          <a class="linkbtn" href="https://marketplace.visualstudio.com/items?itemName=kaushiknaru.linkedin-formatter" target="_blank" rel="noopener">
+            Marketplace
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+          <a class="linkbtn repo-ico" href="https://github.com/MrTig-afk/linkedin-formatter" target="_blank" rel="noopener" aria-label="Source on GitHub" title="Source on GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+          </a>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -669,27 +712,27 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
   <div class="skills-grid">
     <div class="skill-cell reveal">
       <div class="label"><span class="num">01</span><h4>Languages</h4></div>
-      <ul><li>Python</li><li>JavaScript</li><li>SQL</li></ul>
+      <ul><li>Python</li><li>SQL</li><li>TypeScript</li><li>JavaScript</li></ul>
     </div>
     <div class="skill-cell reveal d1">
-      <div class="label"><span class="num">02</span><h4>Frontend</h4></div>
-      <ul><li>React 19</li><li>Vite</li><li>Tailwind CSS</li><li>PWA / Workbox</li></ul>
+      <div class="label"><span class="num">02</span><h4>Backend &amp; APIs</h4></div>
+      <ul><li>FastAPI</li><li>Node.js / Express</li><li>REST design, rate limiting, async job queues</li><li>pytest (1,650+ tests shipped)</li></ul>
     </div>
     <div class="skill-cell reveal d2">
-      <div class="label"><span class="num">03</span><h4>Backend</h4></div>
-      <ul><li>FastAPI</li><li>Uvicorn</li><li>Mangum</li><li>psycopg2 / asyncpg</li></ul>
+      <div class="label"><span class="num">03</span><h4>Data &amp; Storage</h4></div>
+      <ul><li>Neon Postgres (row-level security)</li><li>SQLite (WAL)</li><li>Snowflake</li><li>AWS S3</li></ul>
     </div>
     <div class="skill-cell reveal">
-      <div class="label"><span class="num">04</span><h4>AI</h4></div>
-      <ul><li>Structured extraction (schema-constrained output)</li><li>Multimodal / vision</li><li>Multi-provider routing (OpenRouter, Gemini, Groq)</li><li>Prompt design &amp; versioning</li></ul>
+      <div class="label"><span class="num">04</span><h4>Infra &amp; DevOps</h4></div>
+      <ul><li>Docker / Compose</li><li>nginx</li><li>GitHub Actions CI</li><li>Vercel / Render</li></ul>
     </div>
     <div class="skill-cell reveal d1">
-      <div class="label"><span class="num">05</span><h4>Data &amp; Auth</h4></div>
-      <ul><li>Neon Postgres</li><li>Supabase</li><li>AWS S3</li></ul>
+      <div class="label"><span class="num">05</span><h4>Auth &amp; Security</h4></div>
+      <ul><li>JWT / JWKS verification</li><li>OAuth 2.0</li><li>Cognito / Supabase / Clerk</li><li>CORS, CSP &amp; security headers</li></ul>
     </div>
     <div class="skill-cell reveal d2">
-      <div class="label"><span class="num">06</span><h4>Deploy</h4></div>
-      <ul><li>Vercel</li><li>Render</li></ul>
+      <div class="label"><span class="num">06</span><h4>AI Integration</h4></div>
+      <ul><li>Structured extraction (schema-constrained output)</li><li>Multi-provider routing (OpenRouter, Gemini, Groq)</li><li>Fallback chains &amp; timeouts</li><li>Sentence-Transformers</li></ul>
     </div>
   </div>
 </section>
@@ -699,8 +742,8 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
   <div class="contact">
     <div class="contact-lead">
       <div class="sec-index reveal"><b>03</b> / CONTACT</div>
-      <h2 class="reveal d1" style="margin-top:14px">Let’s build something <span class="accent">intelligent.</span></h2>
-      <p class="reveal d1">Currently open to AI engineering roles and internships. Have a product that needs a language model inside it? Drop me a line.</p>
+      <h2 class="reveal d1" style="margin-top:14px">Let’s build something <span class="accent">that holds up.</span></h2>
+      <p class="reveal d1">Currently open to backend and platform engineering roles and internships in Melbourne. Have an AI product that needs a real backend behind it? Drop me a line.</p>
     </div>
 
     <form class="form reveal d1" id="contactForm" novalidate>
