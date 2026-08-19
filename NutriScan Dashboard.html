@@ -103,7 +103,7 @@
     <div class="sec-label rv"><b>01</b> / BY THE NUMBERS</div>
     <div class="kpis rv d1">
       <div class="kpi"><div class="k">Postgres tables</div><div class="v">11</div><div class="delta">every one under RLS</div></div>
-      <div class="kpi"><div class="k">Vision models</div><div class="v">2</div><div class="delta flat">primary + fallback</div></div>
+      <div class="kpi"><div class="k">Deleted rows kept</div><div class="v">30d</div><div class="delta">trigger-fed recycle bin</div></div>
       <div class="kpi"><div class="k">Free scans / day</div><div class="v">10</div><div class="delta">keeps the AI bill bounded</div></div>
       <div class="kpi"><div class="k">Passwords stored</div><div class="v">0</div><div class="delta">OAuth &amp; email codes only</div></div>
     </div>
@@ -139,7 +139,8 @@
           <li><span class="m no">✗</span><span><b>No passwords, ever:</b> sign in with Google OAuth or a 6-digit emailed code. Nothing to store, leak, or reset</span></li>
           <li><span class="m yes">✓</span><span><b>Verified, not trusted:</b> ES256 JWTs are checked server-side against Supabase's JWKS on every request</span></li>
           <li><span class="m yes">✓</span><span><b>Isolated at the storage layer:</b> each request binds the user to the database session, and row-level security policies do the rest. App bugs can't read another user's rows</span></li>
-          <li><span class="m yes">✓</span><span><b>Deletable:</b> full account deletion is a first-class Settings action</span></li>
+          <li><span class="m yes">✓</span><span><b>Contained when hijacked:</b> a delete spree freezes the account on two layers (in-process lock, Supabase admin ban) and every deleted row is already in a 30-day recycle bin</span></li>
+          <li><span class="m yes">✓</span><span><b>Deletable, carefully:</b> full account deletion is a first-class Settings action, gated on a sign-in within the last five minutes (the JWT <code>amr</code> claim, not the refreshable <code>iat</code>)</span></li>
         </ul>
       </div>
     </div>
@@ -157,6 +158,10 @@
       <div class="feat"><h4><span class="fx">F-06</span>User-controlled PWA updates</h4><p>New versions don't force-reload mid-log: a banner shows exactly what changed (from a versioned changelog) and the user applies it when ready.</p></div>
       <div class="feat"><h4><span class="fx">F-07</span>Trends without a chart library</h4><p>The 7-day trends tab renders its charts as raw SVG: no charting dependency, full control over the visuals, smaller bundle.</p></div>
       <div class="feat"><h4><span class="fx">F-08</span>Cost-capped by design</h4><p>A 10-scans-per-day limit per account keeps the vision API bill bounded while staying generous for real daily use.</p></div>
+      <div class="feat"><h4><span class="fx">F-09</span>Abuse guards that block, not just alert</h4><p>One middleware: 300+ requests a minute or a 30-URL 404 walk from one IP earns a 10-minute 429, keyed on the Cloudflare-verified client IP. CORS stays outermost so blocked responses remain readable to the browser.</p></div>
+      <div class="feat"><h4><span class="fx">F-10</span>Recycle bin inside Postgres</h4><p>SECURITY DEFINER BEFORE DELETE triggers on nine tables copy every deleted row as JSONB into a table the app role cannot read or purge. Retention is hard-coded at 30 days; explicit account deletion bypasses it via a transaction-local GUC.</p></div>
+      <div class="feat"><h4><span class="fx">F-11</span>Two-layer account freeze</h4><p>60 verified deletes in ten minutes from one session: every route returns 423 instantly from an in-process lock, and a Supabase admin ban (issued off the event loop) makes it stick across restarts. Reversal is a deliberate runbook step.</p></div>
+      <div class="feat"><h4><span class="fx">F-12</span>Two-channel observability</h4><p>ntfy.sh for ~25 hand-written ops events (quota, spikes, keepalive, blocks, freezes) with per-event cooldowns and rolling-window spike detection; Sentry for unhandled exceptions with stack trace and request context.</p></div>
     </div>
   </section>
 
