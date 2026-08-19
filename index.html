@@ -822,12 +822,6 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
 /* ---------- Scroll reveal ---------- */
 (function () {
   var els = document.querySelectorAll('.reveal');
-  // Respect reduced-motion: freeze the project-card demo clips on their poster.
-  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll('video.shot-img').forEach(function (v) {
-      v.removeAttribute('autoplay'); v.pause();
-    });
-  }
   if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) {
@@ -835,6 +829,27 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   els.forEach(function (e) { io.observe(e); });
+})();
+
+/* ---------- Card clips: make autoplay actually happen on iOS ---------- */
+(function () {
+  var vids = document.querySelectorAll('video.shot-img');
+  function kick() {
+    vids.forEach(function (v) {
+      // iOS honours the muted property more reliably than the attribute,
+      // and an explicit play() recovers clips the browser declined to start.
+      v.muted = true;
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    });
+  }
+  kick();
+  window.addEventListener('load', kick, { once: true });
+  // Low Power Mode denies play() until a user gesture; retry on the first one.
+  ['touchstart', 'touchend', 'click', 'scroll'].forEach(function (ev) {
+    window.addEventListener(ev, kick, { once: true, passive: true });
+  });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
 })();
 
 /* ---------- Contact form validation ---------- */
