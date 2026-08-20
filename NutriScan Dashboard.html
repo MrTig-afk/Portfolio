@@ -138,7 +138,7 @@
         </div>
         <ul class="priv">
           <li><span class="m no">✗</span><span><b>No passwords, ever:</b> sign in with Google OAuth or a 6-digit emailed code. Nothing to store, leak, or reset</span></li>
-          <li><span class="m yes">✓</span><span><b>Verified, not trusted:</b> ES256 JWTs are checked server-side against Supabase's JWKS on every request</span></li>
+          <li><span class="m yes">✓</span><span><b>Verified, not trusted:</b> every JWT decode goes through one verifying helper (shared-secret HS256 and cached JWKS) - pinned-ruleset semgrep reports zero findings, and the CI that guards it pins every action and scanner to an immutable hash</span></li>
           <li><span class="m yes">✓</span><span><b>Isolated at the storage layer:</b> each request binds the user to the database session, and row-level security policies do the rest. App bugs can't read another user's rows</span></li>
           <li><span class="m yes">✓</span><span><b>Contained when hijacked:</b> a delete spree freezes the account on two layers (in-process lock, Supabase admin ban) and every deleted row is already in a 30-day recycle bin</span></li>
           <li><span class="m yes">✓</span><span><b>Deletable, carefully:</b> full account deletion is a first-class Settings action, gated on a sign-in within the last five minutes (the JWT <code>amr</code> claim, not the refreshable <code>iat</code>)</span></li>
