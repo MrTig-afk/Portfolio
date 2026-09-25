@@ -88,7 +88,7 @@
   <section class="d-hero wrap">
     <div class="eyebrow rv">Engineering case study · HealthTech</div>
     <h1 class="rv d1">NutriScan</h1>
-    <p class="rv d2">Photograph a nutrition label and it becomes tracked macros: AI vision reads the calories, protein, carbs, fat and fibre straight off the packet. No barcode database, no manual typing. Around that sits a full tracker: daily goals, a food library, one-tap meal templates, weekly trends, and an AI assistant that already knows your log.</p>
+    <p class="rv d2">Photograph a nutrition label and it becomes tracked macros: AI vision reads the calories, protein, carbs, fat and fibre straight off the packet. No barcode database, no manual typing. Around that sits a full tracker: daily goals, a food library, one-tap meal templates, weekly trends, and an AI assistant that already knows your log. It also has a public API and a Claude connector, so a claude.ai chat can read your day and log a meal by description, with every change previewed and confirmed before it saves (connector in private testing).</p>
     <div class="sample-pill live rv d3"><span class="d"></span> Live on Vercel · installable PWA · free to try</div>
     <div class="rv d3" style="margin-top:16px">
       <a class="qr-url" href="https://nutritional-tracker-delta.vercel.app/" target="_blank" rel="noopener">
@@ -102,10 +102,10 @@
   <section class="d-sec wrap">
     <div class="sec-label rv"><b>01</b> / BY THE NUMBERS</div>
     <div class="kpis rv d1">
-      <div class="kpi"><div class="k">Postgres tables</div><div class="v">11</div><div class="delta">every one under RLS</div></div>
-      <div class="kpi"><div class="k">Deleted rows kept</div><div class="v">30d</div><div class="delta">trigger-fed recycle bin</div></div>
+      <div class="kpi"><div class="k">Postgres tables</div><div class="v">19</div><div class="delta">17 under forced RLS</div></div>
+      <div class="kpi"><div class="k">Backend tests</div><div class="v">350</div><div class="delta">run in CI on every push</div></div>
       <div class="kpi"><div class="k">Free scans / day</div><div class="v">10</div><div class="delta">keeps the AI bill bounded</div></div>
-      <div class="kpi"><div class="k">Passwords stored</div><div class="v">0</div><div class="delta">OAuth &amp; email codes only</div></div>
+      <div class="kpi"><div class="k">Label photos stored</div><div class="v">0</div><div class="delta">only the numbers are kept</div></div>
     </div>
   </section>
 
@@ -128,7 +128,7 @@
           <span class="stage">log</span>
         </div>
         <p class="flow-note">
-          <!-- auto:start -->Images are prepared <b>in the browser</b> before they ever leave the phone: a touch-friendly canvas cropper isolates the label, then the image is resized and grayscaled for smaller uploads, faster scans, and cheaper AI calls. On the server every upload passes <b>one validating gate</b>: the real format is read from the file's bytes (JPEG, PNG or WebP; the browser's label is ignored), dimensions are checked against a 30-megapixel cap before a pixel is decoded, and the image is re-encoded as a fresh JPEG with no metadata. Nothing else reaches storage or the model. <b>Gemini 2.5 Flash</b> reads the label, with automatic fallback to 3.6 Flash if the primary model fails, and its answer is checked against an explicit schema (allowed fields, sane numeric bounds; text printed on the photo is data, never instructions) and normalized into clean macros (<code>kcal · protein · carbs · fat · fibre</code>) before anything is shown or logged.<!-- auto:end -->
+          <!-- auto:start -->Images are prepared <b>in the browser</b> before they ever leave the phone: a touch-friendly canvas cropper isolates the label, then the image is resized and grayscaled for smaller uploads, faster scans, and cheaper AI calls. On the server every upload passes <b>one validating gate</b>: oversized requests are refused before the body is read, the real format is read from the file's bytes (JPEG, PNG, WebP or iPhone HEIC; the browser's label is ignored), dimensions are checked against a 30-megapixel cap before a pixel is decoded, and the image is re-encoded as a fresh JPEG with no metadata. Nothing else reaches the model, and the photo itself is never stored: only the extracted numbers are. <b>Gemini 2.5 Flash</b> reads the label, with automatic fallback to 3.6 Flash if the primary model fails, and its answer is checked against an explicit schema (allowed fields, sane numeric bounds; text printed on the photo is data, never instructions) and normalized into clean macros (<code>kcal · protein · carbs · fat · fibre</code>) before anything is shown or logged.<!-- auto:end -->
         </p>
       </div>
       <div class="panel">
@@ -139,9 +139,10 @@
         <ul class="priv">
           <li><span class="m no">✗</span><span><b>No passwords, ever:</b> sign in with Google OAuth or a 6-digit emailed code. Nothing to store, leak, or reset</span></li>
           <li><span class="m yes">✓</span><span><b>Verified, not trusted:</b> every JWT decode goes through one verifying helper (shared-secret HS256 and cached JWKS) - pinned-ruleset semgrep reports zero findings, and the CI that guards it pins every action and scanner to an immutable hash</span></li>
-          <li><span class="m yes">✓</span><span><b>Isolated at the storage layer:</b> each request binds the user to the database session, and row-level security policies do the rest. App bugs can't read another user's rows</span></li>
-          <li><span class="m yes">✓</span><span><b>Contained when hijacked:</b> a delete spree freezes the account on two layers (in-process lock, Supabase admin ban) and every deleted row is already in a 30-day recycle bin</span></li>
-          <li><span class="m yes">✓</span><span><b>Deletable, carefully:</b> full account deletion is a first-class Settings action, gated on a sign-in within the last five minutes (the JWT <code>amr</code> claim, not the refreshable <code>iat</code>)</span></li>
+          <li><span class="m yes">✓</span><span><b>Isolated at the storage layer:</b> each request binds the user to the database session, and row-level security policies on 17 tables do the rest, through a runtime role that cannot bypass them. App bugs can't read another user's rows</span></li>
+          <li><span class="m yes">✓</span><span><b>Contained when hijacked:</b> a delete spree freezes the account on two layers (in-process lock, Supabase admin ban), revokes every API token, and every deleted row is already in a 30-day recycle bin</span></li>
+          <li><span class="m yes">✓</span><span><b>Deletable, with a way back:</b> deleting starts a 15-day grace period (gated on a sign-in within the last five minutes, the JWT <code>amr</code> claim): the account turns view-and-export only, other devices are signed out, "Keep my account" undoes it, and day 15 erases every row and the login</span></li>
+          <li><span class="m yes">✓</span><span><b>Your data, any time:</b> export everything as an Excel workbook or a zip of CSVs, even during the grace period</span></li>
         </ul>
       </div>
     </div>
@@ -151,7 +152,7 @@
   <section class="d-sec wrap">
     <div class="sec-label rv"><b>03</b> / ENGINEERING HIGHLIGHTS</div>
     <div class="feats rv d1">
-      <div class="feat"><h4><span class="fx">F-01</span>Row-level security everywhere</h4><p>All 11 tables carry per-user RLS policies, so isolation is enforced by Postgres itself, not by remembering a WHERE clause in every query.</p></div>
+      <div class="feat"><h4><span class="fx">F-01</span>Row-level security everywhere</h4><p>17 of the 19 tables carry forced per-user RLS policies that match nothing when the user is unset, so isolation is enforced by Postgres itself, not by remembering a WHERE clause in every query. Cross-user jobs go through narrow SECURITY DEFINER functions.</p></div>
       <div class="feat"><h4><span class="fx">F-02</span>Vision with a fallback</h4><p>Gemini 2.5 Flash is the primary label reader; if it errors, the scan retries on 3.6 Flash automatically, and the app waits out the server's full retry budget instead of re-sending. Users see macros, not model outages.</p></div>
       <div class="feat"><h4><span class="fx">F-03</span>Context-aware AI assistant</h4><p>A Groq-powered chat tab that's fed today's log, remaining macros and 7-day averages. Multi-turn, with server-side safety guardrails.</p></div>
       <div class="feat"><h4><span class="fx">F-04</span>Meal templates</h4><p>Multi-select foods from the library into a named template, then log an entire breakfast in one tap instead of four.</p></div>
@@ -159,11 +160,17 @@
       <div class="feat"><h4><span class="fx">F-06</span>User-controlled PWA updates</h4><p>New versions don't force-reload mid-log: a banner shows exactly what changed (from a versioned changelog) and the user applies it when ready.</p></div>
       <div class="feat"><h4><span class="fx">F-07</span>Trends without a chart library</h4><p>The 7-day trends tab renders its charts as raw SVG: no charting dependency, full control over the visuals, smaller bundle.</p></div>
       <div class="feat"><h4><span class="fx">F-08</span>Cost-capped by design</h4><p>A 10-scans-per-day limit per account, plus per-user and per-IP burst caps checked before the paid call, keeps the vision API bill bounded while staying generous for real daily use.</p></div>
-      <div class="feat"><h4><span class="fx">F-09</span>Abuse guards that block, not just alert</h4><p>One middleware: 300+ requests a minute or a 30-URL 404 walk from one IP earns a 10-minute 429, keyed on the Cloudflare-verified client IP. CORS stays outermost so blocked responses remain readable to the browser.</p></div>
-      <div class="feat"><h4><span class="fx">F-10</span>Recycle bin inside Postgres</h4><p>SECURITY DEFINER BEFORE DELETE triggers on nine tables copy every deleted row as JSONB into a table the app role cannot read or purge. Retention is hard-coded at 30 days; explicit account deletion bypasses it via a transaction-local GUC.</p></div>
+      <div class="feat"><h4><span class="fx">F-09</span>Abuse guards that block, not just alert</h4><p>One middleware: 300+ requests a minute or a 30-URL 404 walk from one IP earns a 10-minute 429, keyed on the Cloudflare-verified client IP; 20 bad API tokens in five minutes earns the same.</p></div>
+      <div class="feat"><h4><span class="fx">F-10</span>Recycle bin inside Postgres</h4><p>SECURITY DEFINER BEFORE DELETE triggers on eleven tables copy every deleted row as JSONB into a table the app role cannot read or purge. Retention is hard-coded at 30 days; only the day-15 account purge bypasses it, and then empties that account's rows from the bin too.</p></div>
       <div class="feat"><h4><span class="fx">F-11</span>Two-layer account freeze</h4><p>60 verified deletes in ten minutes from one session: every route returns 423 instantly from an in-process lock, and a Supabase admin ban (issued off the event loop) makes it stick across restarts. Reversal is a deliberate runbook step.</p></div>
-      <div class="feat"><h4><span class="fx">F-12</span>Two-channel observability</h4><p>ntfy.sh for ~25 hand-written ops events (quota, spikes, keepalive, blocks, freezes) with per-event cooldowns and rolling-window spike detection; Sentry for unhandled exceptions with stack trace and request context.</p></div>
+      <div class="feat"><h4><span class="fx">F-12</span>Two-channel observability</h4><p>Web Push to the owner's own devices for 37 hand-written ops events (quota, spikes, budget, keepalive, blocks, freezes) with per-event cooldowns and rolling-window spike detection; Sentry for unhandled exceptions with stack trace and request context.</p></div>
       <div class="feat"><h4><span class="fx">F-13</span>Uploads that cannot lie</h4><p>One server-side gate for every image: magic-byte format sniffing (the client's content-type is never trusted), polyglot rejection, a decompression-bomb cap, verify-then-decode, and a metadata-free re-encode. An HTML file named .jpg, a PNG declaring a 30000x30000 canvas, and a photo with "ignore the label" printed on it each have a test; the model's JSON is schema-checked and rejected, never clamped.</p></div>
+      <div class="feat"><h4><span class="fx">F-14</span>A Claude connector that asks first</h4><p>A Model Context Protocol server on Supabase's OAuth 2.1 server lets claude.ai read the day and log meals. Every write tool saves nothing and returns a preview plus a one-time code; only confirming the code commits, and the code doubles as the idempotency key so a retry can never save twice.</p></div>
+      <div class="feat"><h4><span class="fx">F-15</span>A public REST API done properly</h4><p>17 endpoints with hashed, scoped personal tokens, per-user rate limits with RateLimit headers, strict request models, idempotency keys, ETag/If-Match on edits, RFC 9457 errors, previews that run the real write and roll back, and an OpenAPI file a test keeps honest.</p></div>
+      <div class="feat"><h4><span class="fx">F-16</span>One Library, one rule</h4><p>The app and Claude share one food Library. "Ask before saving new foods" is on by default and enforced by the server; it is the only setting Claude may change, and only to off.</p></div>
+      <div class="feat"><h4><span class="fx">F-17</span>Meals with names</h4><p>Everything Claude logs lands as one named meal marked "via Claude", and any meal can be opened and renamed. The grouping rides inside each row's JSON, so it needed no schema change.</p></div>
+      <div class="feat"><h4><span class="fx">F-18</span>A budget that protects the app</h4><p>The backend estimates its own free database compute use, alerts at 70% and pauses only the public API at 90%, so the app keeps working for its users. An owner-only admin panel shows it without waking the database.</p></div>
+      <div class="feat"><h4><span class="fx">F-19</span>kcal in storage, your unit on screen</h4><p>Every write is settled to kcal by one helper (a previewed migration checked all 375 stored values after a backup branch), and each account picks kcal or kJ for display, including in the chat's answers.</p></div>
     </div>
   </section>
 
@@ -221,7 +228,7 @@
     <div class="stack rv d1">
       <span class="chip">React 19</span><span class="chip">Vite</span><span class="chip">FastAPI</span>
       <span class="chip">Gemini 2.5 Flash</span><span class="chip">Groq</span><span class="chip">Neon Postgres</span>
-      <span class="chip">Supabase Auth</span><span class="chip">AWS S3</span><span class="chip">Web Push / VAPID</span>
+      <span class="chip">Supabase Auth + OAuth 2.1</span><span class="chip">Model Context Protocol</span><span class="chip">Web Push / VAPID</span>
       <span class="chip">PWA / Workbox</span><span class="chip">Vercel</span><span class="chip">Render</span>
     </div>
   </section>
