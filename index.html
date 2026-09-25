@@ -641,7 +641,7 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
         <div class="shot-bg" style="background-image:url('assets/nutriscan-card-poster.png')"></div>
         <span class="corner tl"></span><span class="corner br"></span>
         <span class="tag">HealthTech</span>
-        <video class="shot-img portrait" style="background:#0d1413" autoplay muted loop playsinline preload="metadata" poster="assets/nutriscan-card-poster.png" aria-label="NutriScan live demo: a nutrition label photo is cropped, read by AI vision into macros, and logged to the day's tracker">
+        <video class="shot-img portrait" style="background:#0d1413" autoplay muted loop playsinline preload="metadata" poster="assets/nutriscan-card-poster.png" aria-label="NutriScan demo: a nutrition label photo is cropped, read into macros and logged to the day's tracker, a saved food is logged again from the Library, then the weekly trends and the data export in Settings">
           <source src="assets/nutriscan-card.mp4" type="video/mp4" />
           <img class="shot-img" src="assets/nutriscan-screen-results.png" alt="NutriScan scan result: calories, protein, carbs and fat read from a nutrition label" loading="lazy" />
         </video>
@@ -649,12 +649,13 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
       <div class="card-body">
         <div class="card-no"><b>P-03</b> / nutriscan</div>
         <h3><a class="proj-link" href="NutriScan Dashboard.html">NutriScan<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10M7 17 17 7"/></svg></a></h3>
-        <p>Photograph a nutrition label and its macros land as validated rows in an 11-table Postgres schema. Per-user isolation is enforced by row-level security rather than application code, ES256 JWTs are verified server-side via JWKS, and a Gemini-to-fallback model chain with timeouts keeps the endpoint up when a provider degrades. Every uploaded image is sniffed, decoded under a pixel cap and re-encoded before it reaches storage or the model, and the model's answer is schema-checked before it reaches the log. Abuse is blocked at a middleware rather than merely alerted, a hijacked session on a delete spree is frozen on two layers, and trigger-fed recycle-bin rows make every deletion recoverable for 30 days.</p>
+        <p>Photograph a nutrition label and its macros land as validated rows in a 19-table Postgres schema, with per-user isolation enforced by row-level security rather than application code. Every image passes one validating gate and is never stored, and Gemini's answer is schema-checked before it reaches the log. A public REST API and a Claude connector let a claude.ai chat read the day and log meals, with every write previewed and committed only by a one-time code. Account deletion runs a 15-day grace period with export, abuse is blocked at a middleware rather than merely alerted, and the API pauses itself before the free database budget runs out.</p>
         <div class="chips">
           <span class="chip">FastAPI</span>
           <span class="chip">Neon</span>
           <span class="chip">Gemini</span>
           <span class="chip">Groq</span>
+          <span class="chip">MCP</span>
           <span class="chip">React</span>
         </div>
         <div class="card-foot">
