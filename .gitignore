@@ -14,3 +14,10 @@ __pycache__/
 *.fdb_latexmk
 *.synctex.gz
 *.bak-*
+
+# Working assets no page uses (kept locally, not published)
+assets/financetracker-search.webm
+assets/financetracker-settings-dark.png
+assets/financetracker-trends-dark.png
+assets/financetracker-trends.webm
+assets/nutriscan-phone.jpeg
