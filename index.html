@@ -703,6 +703,37 @@ footer { border-top: 1px solid var(--line); padding-block: 38px; margin-top: 40p
         </div>
       </div>
     </article>
+
+    <!-- Claude Remote -->
+    <article class="card reveal d1">
+      <div class="shot has-img">
+        <div class="shot-bg" style="background-image:url('assets/claude-remote-card-poster.png')"></div>
+        <span class="corner tl"></span><span class="corner br"></span>
+        <span class="tag">Developer Tooling</span>
+        <video class="shot-img portrait" style="background:#0a0d0a" autoplay muted loop playsinline preload="metadata" poster="assets/claude-remote-card-poster.png" aria-label="Claude Remote demo: the phone app unlocks with a passcode, a project is tapped and its Claude Code session is confirmed running on the PC, then STOP ends it after a warning that nothing writes a handoff">
+          <source src="assets/claude-remote-card.mp4" type="video/mp4" />
+          <img class="shot-img" src="assets/claude-remote-screen-running.png" alt="Claude Remote with one project running as a green tile and the other projects listed below" loading="lazy" />
+        </video>
+      </div>
+      <div class="card-body">
+        <div class="card-no"><b>P-05</b> / claude-remote</div>
+        <h3><a class="proj-link" href="Claude Remote Dashboard.html">Claude Remote<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10M7 17 17 7"/></svg></a></h3>
+        <p>Tap a project on your phone and a Claude Code session starts on your Windows PC in that folder, with your own hooks, skills and MCP servers, then waits in the Claude app's Code tab. A zero-dependency Node agent stays on loopback, reached only through Tailscale serve and a scrypt-hashed passcode with backoff. A tile turns green only once the agent has proved a live process, and STOP tree-kills the session and confirms it by polling. It installs as a Claude Code plugin with one line, and updates itself with a rollback if the new agent does not come up.</p>
+        <div class="chips">
+          <span class="chip">Node.js</span>
+          <span class="chip">PowerShell</span>
+          <span class="chip">PWA</span>
+          <span class="chip">Tailscale</span>
+          <span class="chip">Web Push</span>
+          <span class="chip">C#</span>
+        </div>
+        <div class="card-foot">
+          <a class="linkbtn repo-ico" href="https://github.com/MrTig-afk/claude-remote" target="_blank" rel="noopener" aria-label="Source on GitHub" title="Source on GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+          </a>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
