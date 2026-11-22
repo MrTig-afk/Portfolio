@@ -18,9 +18,9 @@ const facts = await getProjectFacts(p.repo);
 const LABEL = { live: "Open live", github: "GitHub", npm: "npm", vscode: "VS Code Marketplace", demo: "Live demo", docs: "Docs" } as const;
 const STATUS = { live: "Live", shipped: "Shipped", archived: "Archived" } as const;
 ---
-<Base title={p.name} current="Work" og={`work-${project.id}`} description={p.summary}>
+<Base title={p.name} current="Portfolio" og={`work-${project.id}`} description={p.summary}>
   <div class="wrap ph1">
-    <span class="crumb"><a href="/work">Work</a> / {p.name}</span>
+    <span class="crumb"><a href="/work">Portfolio</a> / {p.name}</span>
     <h1>{p.name}</h1>
     <p>{p.summary}</p>
     <div class="row mt">

@@ -45,6 +45,7 @@ const opensource = defineCollection({
   loader: file("./src/content/opensource.json"),
   schema: z.object({
     repo: z.string().regex(/^[\w.-]+\/[\w.-]+$/),
+    name: z.string(),
     description: z.string(),
     author: z.string(),
   }),

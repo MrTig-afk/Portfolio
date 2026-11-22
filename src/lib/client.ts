@@ -11,7 +11,8 @@ function theme() {
   const isDark = () => root.dataset.theme === "dark" || (!root.dataset.theme && window.matchMedia("(prefers-color-scheme: dark)").matches);
   document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((b) => {
     b.hidden = false; // shown only when JS can make it work
-    b.textContent = isDark() ? "Light" : "Dark";
+    b.dataset.mode = isDark() ? "dark" : "light"; // CSS shows the sun in dark mode, the moon in light
+    b.setAttribute("aria-label", isDark() ? "Switch to light theme" : "Switch to dark theme");
     b.onclick = () => {
       const next = isDark() ? "light" : "dark";
       root.dataset.theme = next;
@@ -49,6 +50,19 @@ function video() {
   if (!box || !v || !btn) return;
   btn.onclick = () => { v.muted = false; v.controls = true; v.play().catch(() => {}); btn.hidden = true; };
   v.addEventListener("error", () => v.remove(), { once: true }); // the poster image underneath stays
+}
+
+// Card videos play only while on screen, and never under reduced motion (the poster stays).
+function cardVideos() {
+  const vids = Array.from(document.querySelectorAll<HTMLVideoElement>("video[data-card]"));
+  if (!vids.length || reduceMotion() || !("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      const v = e.target as HTMLVideoElement;
+      if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
+    }
+  }, { threshold: 0.25 });
+  vids.forEach((v) => io.observe(v));
 }
 
 function contactForm() {
@@ -98,6 +112,7 @@ export function boot() {
   theme();
   footerScene();
   video();
+  cardVideos();
   contactForm();
   analytics();
   if (location.hash === "#sent") savePrompt(); // back from the no-JS form post
