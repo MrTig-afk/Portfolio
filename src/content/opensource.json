@@ -3,6 +3,21 @@
     "id": "whatsapp-claude-plugin",
     "repo": "Rich627/whatsapp-claude-plugin",
     "description": "Claude Code WhatsApp channel plugin. Multi-terminal sync, access control and privacy work.",
-    "author": "MrTig-afk"
+    "author": "MrTig-afk",
+    "name": "WhatsApp Claude plugin"
+  },
+  {
+    "id": "reactive-resume",
+    "repo": "reactive-resume/reactive-resume",
+    "description": "Open-source resume builder. JSON import auto-detection, a bounded AI provider test, and a Windows tooling fix.",
+    "author": "MrTig-afk",
+    "name": "Reactive Resume"
+  },
+  {
+    "id": "nitrosend-cli",
+    "repo": "nitrosend/cli",
+    "description": "Nitrosend CLI for email and SMS. Test paths that work on Windows.",
+    "author": "MrTig-afk",
+    "name": "Nitrosend CLI"
   }
 ]

@@ -11,7 +11,7 @@ import { SITE } from "../lib/site";
 interface Props {
   title: string;
   description: string;
-  current?: "About" | "Work" | "Notes";
+  current?: "About" | "Portfolio" | "Notes";
   og?: string; // path under /og/, without extension
 }
 const { title, description, current, og = "home" } = Astro.props;

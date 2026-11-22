@@ -3,8 +3,9 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import { HOME } from "../lib/site";
-const featured = (await getCollection("projects", (p) => p.data.featured)).sort((a, b) => a.data.order - b.data.order);
-const total = (await getCollection("projects")).length;
+import { openSource } from "../lib/opensource";
+const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+const os = await openSource();
 ---
 <Base title="Kaushik Narumanchi" description="AI and backend engineer in Melbourne. Case studies of the systems I build and run: MingleHub, NutriScan, Claude Remote and more.">
   <section class="wrap hero">
@@ -30,9 +31,17 @@ const total = (await getCollection("projects")).length;
           </>}
     </div>
   </section>
-  <section class="wrap sec">
-    <div class="sec-head"><h2>Selected work</h2><span class="kick">{featured.length} of {total}</span></div>
-    <div class="plist three">{featured.map((p) => <ProjectCard project={p} />)}</div>
-    <a class="more" href="/work">All work and open source →</a>
+  <section class="wrap sec" aria-labelledby="os-strip">
+    <div class="osstrip">
+      <h2 id="os-strip" class="visually-hidden">Open source</h2><b aria-hidden="true">Open source</b>
+      {os.map((o) => (
+        <span>{o.merged?.count ? `${o.merged.count} merged ${o.merged.count === 1 ? "PR" : "PRs"} in ` : "Contributor to "}<a href={`https://github.com/${o.repo}`} target="_blank" rel="noopener">{o.name}</a></span>
+      ))}
+      <a href="/work#os">See all on Portfolio →</a>
+    </div>
+  </section>
+  <section class="wrap sec" aria-labelledby="projects">
+    <h2 id="projects" class="visually-hidden">Projects</h2>
+    <div class="plist three">{projects.map((p) => <ProjectCard project={p} />)}</div>
   </section>
 </Base>

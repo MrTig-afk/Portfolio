@@ -2,34 +2,34 @@
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
-import { getOpenSource } from "../../lib/github";
+import { openSource } from "../../lib/opensource";
 const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
-const repos = await getCollection("opensource");
-const os = await Promise.all(repos.map(async (r) => ({ ...r.data, merged: await getOpenSource(r.data.repo, r.data.author) })));
+const os = await openSource();
 ---
-<Base title="Work" current="Work" og="work" description="Five systems I built and run, each with a case study: the problem, the architecture and the decisions behind it. Plus my open source contributions.">
+<Base title="Portfolio" current="Portfolio" og="work" description="Five systems I built and run, each with a case study: the problem, the architecture and the decisions behind it. Plus my open source contributions.">
   <div class="wrap ph1">
-    <span class="kick">Work · {projects.length} projects</span>
+    <span class="kick">Portfolio · {projects.length} projects</span>
     <h1>Things I built and run</h1>
     <p>Each one started as a problem in my own week. Every project links to a full case study with the architecture and the decisions behind it.</p>
   </div>
-  <section class="wrap sec">
-    <div class="plist two">{projects.map((p) => <ProjectCard project={p} detail />)}</div>
-  </section>
   <section class="wrap sec" aria-labelledby="os">
     <div class="sec-head"><h2 id="os">Open source</h2></div>
-    {os.map((o) => (
+    <div class="oslist">{os.map((o) => (
       <div class="os">
         <div class="head">
-          <a href={`https://github.com/${o.repo}`} target="_blank" rel="noopener">{o.repo}</a>
-          {o.merged && <span class="count">{o.merged.count} merged PRs</span>}
+          <a href={`https://github.com/${o.repo}`} target="_blank" rel="noopener">{o.name}</a>
+          {o.merged?.count ? <span class="count">{o.merged.count} merged {o.merged.count === 1 ? "PR" : "PRs"}</span> : null}
         </div>
         <p>{o.description}</p>
         {o.merged && o.merged.prs.length > 0 && (
           <ul>{o.merged.prs.map((pr) => <li><a href={pr.url} target="_blank" rel="noopener">{pr.title}</a></li>)}</ul>
         )}
-        {o.merged && <span class="live">PR count from GitHub at build time</span>}
+        {o.merged?.count ? <span class="live">PR count from GitHub at build time</span> : null}
       </div>
-    ))}
+    ))}</div>
+  </section>
+  <section class="wrap sec" aria-labelledby="projects">
+    <h2 id="projects" class="visually-hidden">Projects</h2>
+    <div class="plist two">{projects.map((p) => <ProjectCard project={p} detail />)}</div>
   </section>
 </Base>
