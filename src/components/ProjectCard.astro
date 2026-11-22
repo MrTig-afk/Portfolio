@@ -1,0 +1,16 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { fmtDate, getProjectFacts } from "../lib/github";
+interface Props { project: CollectionEntry<"projects">; detail?: boolean }
+const { project, detail = false } = Astro.props;
+const p = project.data;
+const facts = detail ? await getProjectFacts(p.repo) : null;
+---
+<a class="pcard" href={`/work/${project.id}`}>
+  <h3>{p.name}</h3>
+  <div class="meta"><span>{p.kind}</span><span>{p.year}</span><span class="k">{p.key_number.value} {p.key_number.label}</span></div>
+  <div class="shot"><img src={p.poster} alt={`${p.name} screenshot`} loading="lazy" /></div>
+  <p>{p.summary}</p>
+  {detail && <div class="stack">{p.stack.map((s) => <span>{s}</span>)}</div>}
+  {facts && <div class="live">last push {fmtDate(facts.pushedAt)} · from GitHub</div>}
+</a>

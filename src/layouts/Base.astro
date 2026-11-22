@@ -1,0 +1,65 @@
+---
+import "@fontsource-variable/newsreader";
+import "@fontsource-variable/geist";
+import "@fontsource-variable/geist-mono";
+import "../styles/global.css";
+import TopBar from "../components/TopBar.astro";
+import ContactBar from "../components/ContactBar.astro";
+import Footer from "../components/Footer.astro";
+import { SITE } from "../lib/site";
+
+interface Props {
+  title: string;
+  description: string;
+  current?: "About" | "Work" | "Notes";
+  og?: string; // path under /og/, without extension
+}
+const { title, description, current, og = "home" } = Astro.props;
+// Same form as the sitemap (directory pages, trailing slash).
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const is404 = /^\/404(\.html|\/)?$/.test(Astro.url.pathname);
+const ogImage = new URL(`/og/${og}.png`, SITE.url).href;
+const fullTitle = title === SITE.contact.name ? title : `${title} | ${SITE.contact.name}`;
+---
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {!is404 && <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title="Notes by Kaushik Narumanchi" href="/rss.xml" />
+    <meta name="theme-color" content="#efe9df" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1c1a17" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="mrtig.dev" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {!is404 && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script is:inline src="/theme.js"></script>
+    <script is:inline defer src="/_vercel/insights/script.js"></script>
+  </head>
+  <body>
+    <a class="visually-hidden skip" href="#main">Skip to content</a>
+    <TopBar current={current} />
+    <main id="main"><slot /></main>
+    <Footer />
+    <ContactBar />
+    <script>
+      import { boot } from "../lib/client";
+      boot();
+    </script>
+  </body>
+</html>

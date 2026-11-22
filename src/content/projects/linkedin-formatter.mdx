@@ -1,0 +1,42 @@
+---
+name: LinkedIn Formatter
+kind: Developer tooling
+year: 2026
+summary: One formatting core shipped as a VS Code extension, a zero-dependency CLI on npm and an MCP server.
+stack: [TypeScript, VS Code API, Model Context Protocol, esbuild, npm]
+key_number: { value: "640", label: tests }
+featured: false
+order: 5
+repo: MrTig-afk/linkedin-formatter
+links:
+  - { kind: vscode, url: "https://marketplace.visualstudio.com/items?itemName=kaushiknaru.linkedin-formatter", label: "VS Code Marketplace" }
+  - { kind: github, url: "https://github.com/MrTig-afk/linkedin-formatter" }
+card_video: /assets/formatter-card.mp4
+poster: /assets/formatter-card-poster.png
+logo: /assets/logos/formatter.png
+status: live
+figure: null
+arch: [Conversion core, VS Code extension, CLI on npm, MCP server over stdio]
+---
+
+## Problem
+
+LinkedIn has no bold button. Every bold post you have seen is a Unicode trick: different characters, not styled ones. So when an AI drafts your post, you prompt it again and again to make one word bold, a round trip through a language model for one word.
+
+## What I built
+
+The post lives in a plain `.linkedin` file. A faithful LinkedIn card renders beside the editor and updates on every keystroke, whether you typed it or your AI did. Select text in the card, click bold, and the file now contains the real Unicode characters. You can type directly in the card like a word processor, and every keystroke lands in the file already styled.
+
+## Architecture
+
+One conversion core ships three ways: a VS Code extension, a zero-dependency CLI on npm, and an MCP server over stdio, so an agent can style a post and open the preview without being taught the file convention.
+
+## Key decisions
+
+- **A file as the interface.** A file is the one interface humans and AI agents already share: there is no export step and no sync problem, because the Unicode styling is the text.
+- **Counts like LinkedIn counts.** The character counter counts UTF-16 units, verified against the real composer.
+- **Zero network egress.** No telemetry, no analytics, no requests of any kind, enforced by tests and a nonce-locked Content Security Policy.
+
+## Results
+
+Published on the VS Code Marketplace and Open VSX, with 18 Unicode letterform styles plus two combining marks, and toggles that disable only where no variant exists.

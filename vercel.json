@@ -1,0 +1,73 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/MingleHub%20Dashboard.html",
+      "destination": "/work/minglehub",
+      "permanent": true
+    },
+    {
+      "source": "/NutriScan%20Dashboard.html",
+      "destination": "/work/nutriscan",
+      "permanent": true
+    },
+    {
+      "source": "/Claude%20Remote%20Dashboard.html",
+      "destination": "/work/claude-remote",
+      "permanent": true
+    },
+    {
+      "source": "/FinanceTracker%20Dashboard.html",
+      "destination": "/work/financetracker",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'none'"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/kaushik-narumanchi.vcf",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/vcard; charset=utf-8"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"kaushik-narumanchi.vcf\""
+        }
+      ]
+    }
+  ]
+}

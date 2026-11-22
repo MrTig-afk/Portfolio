@@ -1,0 +1,45 @@
+---
+name: MingleHub
+kind: Multi-tenant SaaS
+year: 2026
+summary: An NFC tap at a bar table opens a live game on every phone there, metered and billed per table.
+stack: [React 19, FastAPI, Mangum, Neon Postgres, Supabase Realtime, Clerk, Stripe, Vercel]
+key_number: { value: "484", label: tests }
+featured: true
+order: 1
+repo: MrTig-afk/MingleHub
+links:
+  - { kind: live, url: "https://mingle-hub.vercel.app/fifty-five-bar/1", label: "Play the demo table" }
+  - { kind: github, url: "https://github.com/MrTig-afk/MingleHub" }
+card_video: /assets/minglehub-card.mp4
+poster: /assets/minglehub-card-poster.png
+logo: /assets/logos/minglehub.png
+status: live
+figure: { src: /assets/minglehub-screen-lobby.png, alt: "MingleHub lobby on a phone, with friends appearing live", caption: "Lobby · friends appear live" }
+arch: [Phone (NFC tap), FastAPI on Vercel, Neon Postgres, Supabase Realtime, Clerk, Stripe metering]
+---
+
+## Problem
+
+Bar games need a person to run them. A venue wants a game that starts itself at every table, bills per table, and never mixes one venue's data with another's. Patrons will not install an app or make an account for one round of trivia.
+
+## What I built
+
+FirstMove grown into a business: a tap-to-play social game platform for bars, pubs and venues. Patrons tap the NFC tag on their table and play Chooser, Trivia and Roulette together on their own phones, with no app, no account and no login. Venues get a live dashboard and metered usage billing; the operator gets a cross-venue admin panel.
+
+An NFC tag is just a URL carrier: it holds `/<venue>/<table>`, so a tap, a QR scan and a shared link all land on the same live table. Each round's game type is drawn from the venue's theme deterministically, so every phone at the table agrees without coordination.
+
+## Architecture
+
+Supabase Realtime broadcast keeps every phone at the table in sync, while a 2-second poll stays the source of truth: a missed message (game end, host hand-off, rejoin) is reconciled, never lost. Round numbering and game state live on the server, not the phones.
+
+## Key decisions
+
+- **Multi-tenant by construction.** Every dashboard query derives the venue from the authenticated user, never the request. Cross-venue access is a tested 403.
+- **Billing built for disputes.** Active play only, in 15-minute blocks with per-table nightly caps: idle time is never billed and a no-play lobby bills $0. Finalising twice is a no-op and a paid invoice can never regress.
+- **NFC, plain and signed.** Cheap NTAG stickers carry a static URL; the same endpoint also verifies NTAG 424 DNA signed taps against replay, with per-tag keys encrypted at rest.
+- **A hardened admin surface.** Every admin mutation is audit-logged with actor, target and IP, inputs reject unknown fields, endpoints are rate-limited, and a CI guard fails the build if dangerous code patterns land.
+
+## Results
+
+Three games and 11 card packs with 300+ prompts, live on Vercel with a seeded demo table. Zero patron logins: a table is just a URL. The test suite runs in CI on every push.

@@ -1,0 +1,45 @@
+---
+name: NutriScan
+kind: AI health app
+year: 2026
+summary: Photograph a nutrition label and its macros land as validated rows, with a public API and a Claude connector.
+stack: [React 19, FastAPI, Gemini 2.5 Flash, Groq, Neon Postgres, Supabase Auth, MCP, PWA]
+key_number: { value: "350", label: tests }
+featured: true
+order: 2
+repo: MrTig-afk/NutritionalTracker
+links:
+  - { kind: live, url: "https://nutritional-tracker-delta.vercel.app/", label: "Open the app" }
+  - { kind: github, url: "https://github.com/MrTig-afk/NutritionalTracker" }
+card_video: /assets/nutriscan-card.mp4
+poster: /assets/nutriscan-card-poster.png
+logo: /assets/logos/nutriscan.png
+status: live
+figure: { src: /assets/nutriscan-screen-results.png, alt: "NutriScan showing macros read from a label photo", caption: "Result · macros read by AI vision" }
+arch: [Phone photo, Crop + grayscale in browser, FastAPI upload gate, Gemini vision, Schema check, Neon Postgres (RLS)]
+---
+
+## Problem
+
+Logging food by hand is the reason people stop logging food. Barcode databases miss local products, and typing five numbers off a packet for every meal is a chore nobody keeps up.
+
+## What I built
+
+Photograph a nutrition label and it becomes tracked macros: AI vision reads the calories, protein, carbs, fat and fibre straight off the packet. Around that sits a full tracker with daily goals, a food library, one-tap meal templates, weekly trends and an AI assistant that already knows your log.
+
+It also has a public REST API and a Claude connector, so a claude.ai chat can read your day and log a meal by description, with every change previewed and confirmed before it saves.
+
+## Architecture
+
+Images are prepared in the browser before they leave the phone: a canvas cropper isolates the label, then the image is resized and grayscaled for smaller uploads and cheaper AI calls. On the server every upload passes one validating gate: the real format is read from the file's bytes, dimensions are capped before a pixel is decoded, and the image is re-encoded with no metadata. Gemini's answer is checked against an explicit schema before anything is shown or logged.
+
+## Key decisions
+
+- **Row-level security everywhere.** 17 of the 19 tables carry forced per-user RLS policies, through a runtime role that cannot bypass them, so isolation is enforced by Postgres, not by remembering a `WHERE` clause.
+- **A Claude connector that asks first.** Every write tool saves nothing and returns a preview plus a one-time code; only confirming the code commits, and the code doubles as the idempotency key.
+- **Cost-capped by design.** 10 scans a day per account plus per-user and per-IP burst caps, checked before the paid call. The API pauses itself before the free database budget runs out.
+- **Abuse blocked, not just alerted.** One middleware turns request floods and 404 walks into a 10-minute 429; a delete spree freezes the account on two layers.
+
+## Results
+
+Live as an installable PWA with 10 free scans a day. Label photos stored: zero, only the numbers are kept. 350 backend tests run in CI on every push.

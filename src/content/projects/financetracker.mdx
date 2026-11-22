@@ -1,0 +1,43 @@
+---
+name: FinanceTracker
+kind: Privacy-first pipeline
+year: 2026
+summary: Bank CSV exports become categorised spending, idempotently. Raw statements never leave the machine.
+stack: [FastAPI, SQLite + FTS5, Vite PWA, OpenRouter, Tailscale, Google Drive API, Web Push]
+key_number: { value: "1,192", label: tests }
+featured: false
+order: 4
+repo: MrTig-afk/FinanceTracker
+links:
+  - { kind: demo, url: "https://mrtig.dev/demo/", label: "Open the live demo" }
+  - { kind: github, url: "https://github.com/MrTig-afk/FinanceTracker" }
+card_video: /assets/financetracker-card.mp4
+poster: /assets/financetracker-card-poster.png
+logo: /assets/logos/financetracker.svg
+status: shipped
+figure: { src: /assets/financetracker-overview-dark.png, alt: "FinanceTracker spending overview dashboard", caption: "Overview · synthetic demo data" }
+arch: [CommBank / Westpac CSV, Parse + dedupe, Sanitiser (fails closed), OpenRouter categorise, SQLite, Excel to Google Drive]
+---
+
+## Problem
+
+Monthly bank exports are the only honest record of where money goes, but every budgeting app wants your bank login or your raw statements on its servers.
+
+## What I built
+
+A self-hosted personal finance tracker that turns monthly CommBank and Westpac CSV exports into an AI-categorised spending dashboard, on desktop and as an installable phone PWA. Privacy is a property of the architecture, not a promise.
+
+## Architecture
+
+One FastAPI backend owns all data and logic; the desktop dashboard and the phone PWA are stateless views of it, served privately over Tailscale. A mandatory sanitiser runs before any network call and fails closed: if a row cannot be confidently cleaned, it is dropped rather than sent. The only payload that leaves is an anonymous description and amount, and every outbound payload is written to a local audit log.
+
+## Key decisions
+
+- **Idempotent pipeline.** File and transaction fingerprinting make re-runs a no-op: no duplicate rows and no wasted categorisation calls.
+- **Internal transfer netting.** Money moved between your own accounts is matched as opposite-sign pairs and excluded from totals and from the categorisation payload.
+- **Content-based bank detection.** Files are matched to a bank by their contents, not their upload slot; unknown formats are rejected with a clear message.
+- **Always-on supervisor.** A small Windows service probes both servers every 15 seconds, relaunches whichever is down, and snapshots the database weekly.
+
+## Results
+
+Seven shipped versions, two banks parsed, and 100% local data. The demo on this site is the same frontend fed entirely by synthetic data.

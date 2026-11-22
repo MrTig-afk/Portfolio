@@ -1,0 +1,22 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+// Only notes written here get a page; Medium entries link out (PRD FR-NOTES-2).
+export async function getStaticPaths() {
+  const notes = await getCollection("notes", (n) => !n.data.draft && !n.data.external_url);
+  return notes.map((note) => ({ params: { slug: note.id }, props: { note } }));
+}
+interface Props { note: CollectionEntry<"notes"> }
+const { note } = Astro.props;
+const { Content } = await render(note);
+const date = note.data.date.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+---
+<Base title={note.data.title} current="Notes" og={`notes-${note.id}`} description={note.data.summary}>
+  <div class="wrap ph1">
+    <span class="crumb"><a href="/notes">Notes</a> / {date}</span>
+    <h1>{note.data.title}</h1>
+    <p>{note.data.summary}</p>
+  </div>
+  <section class="wrap sec"><article class="prose"><Content /></article></section>
+</Base>

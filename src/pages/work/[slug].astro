@@ -1,0 +1,65 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { fmtDate, getProjectFacts } from "../../lib/github";
+
+export async function getStaticPaths() {
+  const all = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+  return all.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, prev: all[(i - 1 + all.length) % all.length], next: all[(i + 1) % all.length] },
+  }));
+}
+interface Props { project: CollectionEntry<"projects">; prev: CollectionEntry<"projects">; next: CollectionEntry<"projects"> }
+const { project, prev, next } = Astro.props;
+const p = project.data;
+const { Content, headings } = await render(project);
+const facts = await getProjectFacts(p.repo);
+const LABEL = { live: "Open live", github: "GitHub", npm: "npm", vscode: "VS Code Marketplace", demo: "Live demo", docs: "Docs" } as const;
+const STATUS = { live: "Live", shipped: "Shipped", archived: "Archived" } as const;
+---
+<Base title={p.name} current="Work" og={`work-${project.id}`} description={p.summary}>
+  <div class="wrap ph1">
+    <span class="crumb"><a href="/work">Work</a> / {p.name}</span>
+    <h1>{p.name}</h1>
+    <p>{p.summary}</p>
+    <div class="row mt">
+      {p.links.map((l, i) => <a class={i === 0 ? "btn solid" : "btn"} href={l.url} target={l.url.startsWith("https://mrtig.dev") ? undefined : "_blank"} rel="noopener">{l.label ?? LABEL[l.kind]}</a>)}
+    </div>
+  </div>
+  <section class="wrap sec">
+    <div class="facts">
+      <div><b>{p.year}</b><span>year</span></div>
+      <div><b>{STATUS[p.status]}</b><span>status{facts?.release ? ` · ${facts.release}` : ""}</span></div>
+      <div><b>{p.key_number.value}</b><span>{p.key_number.label}</span></div>
+      {facts
+        ? <div><b>{fmtDate(facts.pushedAt)}</b><span>last push · GitHub</span></div>
+        : <div><b>{p.kind}</b><span>kind</span></div>}
+    </div>
+    <div class="stack">{p.stack.map((s) => <span>{s}</span>)}</div>
+  </section>
+  <section class="wrap sec">
+    <div class="cs-wrap">
+      <nav class="toc" aria-label="On this page">{headings.filter((h) => h.depth === 2).map((h) => <a href={`#${h.slug}`}>{h.text}</a>)}</nav>
+      <article class="prose">
+        {p.figure && (
+          <figure class="figure">
+            <img src={p.figure.src} alt={p.figure.alt} loading="lazy" />
+            <figcaption>{p.figure.caption}</figcaption>
+          </figure>
+        )}
+        <span class="kick">At a glance</span>
+        <div class="arch">
+          {p.arch.map((n, i) => <>{i > 0 && <span class="a" aria-hidden="true">→</span>}<span class="n">{n}</span></>)}
+        </div>
+        <Content />
+        <h2>Links</h2>
+        <ul>{p.links.map((l) => <li><a class="tlink" href={l.url} target={l.url.startsWith("https://mrtig.dev") ? undefined : "_blank"} rel="noopener">{l.label ?? LABEL[l.kind]}</a></li>)}</ul>
+        <div class="pn">
+          <a href={`/work/${prev.id}`}><span>← Previous</span><b>{prev.data.name}</b></a>
+          <a href={`/work/${next.id}`}><span>Next →</span><b>{next.data.name}</b></a>
+        </div>
+      </article>
+    </div>
+  </section>
+</Base>

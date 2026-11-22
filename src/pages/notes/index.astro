@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { SITE } from "../../lib/site";
+const notes = (await getCollection("notes", (n) => !n.data.draft)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const fmt = (d: Date) => d.toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+---
+<Base title="Notes" current="Notes" og="notes" description="What I learned building my projects, including what broke.">
+  <div class="wrap ph1">
+    <span class="kick">Notes</span>
+    <h1>Notes</h1>
+    <p>What I learned building these, including what broke.</p>
+  </div>
+  <section class="wrap sec">
+    {notes.length === 0
+      ? <div class="empty"><h2>First notes coming soon</h2><p>Until then, my posts live on Medium.</p><a class="btn" href={SITE.medium} target="_blank" rel="noopener">Read on Medium</a></div>
+      : <div class="nlist">
+          {notes.map((n) => (
+            <a href={n.data.external_url ?? `/notes/${n.id}`} target={n.data.external_url ? "_blank" : undefined} rel={n.data.external_url ? "noopener" : undefined}>
+              <span class="d"><span>{fmt(n.data.date)}</span><span>{n.data.external_url ? "Medium ↗" : ""}</span></span>
+              <span class="t">{n.data.title}</span>
+              <span class="s">{n.data.summary}</span>
+            </a>
+          ))}
+        </div>}
+  </section>
+</Base>
