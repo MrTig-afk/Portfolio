@@ -1,0 +1,44 @@
+# CI - the gate everything else keys off. No Claude, no tokens of ours.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  # A PR shares one group (a newer push cancels the older run); each push to main gets its own group
+  # (keyed by commit), so no main commit is ever left cancelled.
+  group: ci-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24 # the major Vercel and local builds use; meets Astro's >=22.23.4
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # read-only, raises the API limit for the live facts
+
+  semgrep:
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep # shortcut: image tag floats (MS-S1-03); pin a tag once one is chosen
+    steps:
+      - uses: actions/checkout@v7
+      # Named rulesets; public/demo/ (a vendored build) is excluded in .semgrepignore.
+      - run: semgrep scan --metrics=off --config p/javascript --config p/typescript --config p/secrets --error
