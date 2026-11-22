@@ -1,0 +1,19 @@
+---
+import { SITE } from "../lib/site";
+interface Props { current?: string }
+const { current } = Astro.props;
+const nav = [["About", "/about"], ["Work", "/work"], ["Notes", "/notes"]];
+---
+<header class="top">
+  <div class="wrap">
+    <a class="name" href="/"><span class="short">Kaushik N.</span><span class="long">Kaushik Narumanchi</span></a>
+    <nav aria-label="Primary">
+      {nav.map(([label, href]) => <a href={href} aria-current={label === current ? "page" : undefined}>{label}</a>)}
+    </nav>
+    <div class="acts">
+      <button class="tlink" type="button" data-theme-toggle hidden>Dark</button>
+      <a class="tlink" href={SITE.contact.linkedin} target="_blank" rel="noopener" data-event="linkedin">LinkedIn</a>
+      <a class="btn solid" href={`mailto:${SITE.contact.email}`} data-event="email">Email me</a>
+    </div>
+  </div>
+</header>

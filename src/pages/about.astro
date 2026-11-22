@@ -1,0 +1,82 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE } from "../lib/site";
+import { FORM_ENDPOINT } from "../lib/contact";
+import { existsSync } from "node:fs";
+
+// The general one-page resume is owed (PRD section 13); the button appears once the file is in public/.
+const hasResume = existsSync("public/kaushik-narumanchi-resume.pdf");
+
+const experience = [
+  { org: "RMIT VXLab, HuDINi", role: "Casual staff · from Dec 2026", text: "Offered after leading the Where's My Ride project in the same lab." },
+  { org: "IRL World", role: "Events Logistics & Automations Lead · Oct 2026 to now", text: "Sales pipeline and community automation." },
+  { org: "Triatin", role: "AI Engineer Intern · Apr 2026 to now", text: "AI lead-generation and contact discovery tool." },
+  { org: "RMIT University, Where's My Ride", role: "Project Lead, WIL industry project · 2026 Semester 2", text: "Real-time Melbourne transport map with delay prediction.", link: "https://wheresmyride.hudini.online/" },
+  { org: "Skilliphy", role: "Backend Engineering Intern · Jul 2025 to Jan 2026", text: "AI skill recommender and parsing pipeline." },
+];
+const skills = [
+  ["AI and data", "Gemini, OpenRouter, Model Context Protocol, Sentence-Transformers, XGBoost"],
+  ["Backend", "Python, FastAPI, Node.js, PostgreSQL, Neon, Stripe"],
+  ["Frontend and tooling", "TypeScript, React, PWA, Vercel, Tailscale"],
+];
+---
+<Base title="About" current="About" og="about" description="Kaushik Narumanchi, AI and backend engineer in Melbourne. Experience, skills, resume and a way to reach me.">
+  <div class="wrap ph1">
+    <span class="kick">About</span>
+    <h1>Kaushik Narumanchi</h1>
+    <p>AI and backend engineer in Melbourne. Master of Data Science, RMIT.</p>
+  </div>
+  <section class="wrap sec">
+    <div class="about-grid">
+      <div class="stackv">
+        <div class="block">
+          <h2>Story</h2>
+          <p class="soft">I am finishing a Master of Data Science at RMIT, graduating on 16 December 2026. Most of what I build started as a problem in my own week: what I ate, what I spent, which job ads I missed. I build the fix, put it in production, and write about what broke.</p>
+        </div>
+        <div class="block">
+          <h2>Experience</h2>
+          <div class="ruled">
+            {experience.map((x) => (
+              <div>
+                <b>{x.org}</b>
+                <span class="m">{x.role}</span>
+                <span class="t">{x.text}</span>
+                {x.link && <a href={x.link} target="_blank" rel="noopener">{new URL(x.link).host} ↗</a>}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="block">
+          <h2>Skills</h2>
+          <div class="ruled">{skills.map(([area, list]) => <div><b>{area}</b><span class="t">{list}</span></div>)}</div>
+        </div>
+        {hasResume && <div class="row"><a class="btn solid" href="/kaushik-narumanchi-resume.pdf" download>Download resume (PDF)</a></div>}
+      </div>
+
+      <form class="form" id="contact" method="post" action={FORM_ENDPOINT} data-contact data-email={SITE.contact.email}>
+        <h2>Write to me</h2>
+        <input type="hidden" name="access_key" value={SITE.web3formsKey} />
+        <input type="hidden" name="subject" value="New message from mrtig.dev" />
+        <input type="hidden" name="redirect" value={`${SITE.url}/about#sent`} />
+        <label class="hp" aria-hidden="true">Leave this empty<input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" /></label>
+        <label for="f-name">Name<input id="f-name" name="name" required maxlength="100" autocomplete="name" /></label>
+        <label for="f-email">Email<input id="f-email" name="email" type="email" required maxlength="200" autocomplete="email" /></label>
+        <label for="f-message">Message<textarea id="f-message" name="message" required maxlength="5000"></textarea></label>
+        <button class="btn solid" type="submit">Send</button>
+        <div class="state" data-state role="status" aria-live="polite" hidden></div>
+        <div class="state ok sent-nojs" id="sent">Message sent. I will reply soon.</div>
+      </form>
+    </div>
+  </section>
+  <template id="save-prompt">
+    <div class="prompt" role="dialog" aria-label="Save my contact">
+      <b>Save my contact?</b>
+      <p>So my details are in your phone when I reply.</p>
+      <div class="row"><a class="btn solid" href="/kaushik-narumanchi.vcf" download data-event="save_contact">Save contact</a><button class="tlink" type="button" data-close>Not now</button></div>
+    </div>
+  </template>
+</Base>
+<style>
+  .sent-nojs { display: none; }
+  .sent-nojs:target { display: block; }
+</style>

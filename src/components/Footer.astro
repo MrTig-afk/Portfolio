@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import { SITE } from "../lib/site";
+const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+// Eight fixed scatter slots (.s0-.s7 in global.css): project cards first, blank sheets fill the rest.
+const BLANKS = Math.max(0, 8 - projects.length);
+---
+<footer class="foot">
+  <div class="wrap">
+    <div class="links">
+      <a href={SITE.github} target="_blank" rel="noopener">GitHub</a>
+      <a href={SITE.medium} target="_blank" rel="noopener">Medium</a>
+      <a href={SITE.contact.linkedin} target="_blank" rel="noopener" data-event="linkedin">LinkedIn</a>
+      <a href="/rss.xml">RSS</a>
+    </div>
+    <div class="small">© 2026 Kaushik Narumanchi · mrtig.dev</div>
+  </div>
+  <div class="scene" data-scene>
+    {projects.map((p, i) => (
+      <a class={`sheet s${i}`} href={`/work/${p.id}`} aria-label={`Open the ${p.data.name} case study`} title={p.data.name}>
+        <img src={p.data.logo} alt="" width="34" height="34" loading="lazy" />
+      </a>
+    ))}
+    {Array.from({ length: BLANKS }, (_, j) => <div class={`sheet env s${projects.length + j}`} aria-hidden="true" />)}
+    <div class="deboss" aria-hidden="true">Kaushik</div>
+  </div>
+</footer>

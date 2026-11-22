@@ -4,6 +4,7 @@ __pycache__/
 .env
 *.tex
 *.pdf
+!public/kaushik-narumanchi-resume.pdf
 
 # LaTeX build artifacts
 *.aux
@@ -21,3 +22,21 @@ assets/financetracker-settings-dark.png
 assets/financetracker-trends-dark.png
 assets/financetracker-trends.webm
 assets/nutriscan-phone.jpeg
+**/.claude/tmp/
+
+# Private planning (PRD and its approval record, never committed)
+docs/
+
+# Master Artifact source, its approval record and its projection (private)
+design/
+
+# Playwright MCP session output
+.playwright-mcp/
+
+# Astro site build and tooling
+node_modules/
+dist/
+.astro/
+.vercel/
+CLAUDE.md
+.pipeline/

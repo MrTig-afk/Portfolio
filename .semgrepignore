@@ -1,0 +1,5 @@
+# Vendored build output of the FinanceTracker demo (third-party React bundle), not our source.
+public/demo/
+# Generated
+dist/
+node_modules/

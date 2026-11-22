@@ -1,0 +1,42 @@
+---
+name: Claude Remote
+kind: Developer tooling
+year: 2026
+summary: Tap a project on your phone and a Claude Code session starts on your PC, with your full setup intact.
+stack: [Node.js 24, PowerShell, C#, PWA, Web Push, Tailscale serve, Claude Code plugins]
+key_number: { value: "1,415", label: tests }
+featured: true
+order: 3
+repo: MrTig-afk/claude-remote
+links:
+  - { kind: github, url: "https://github.com/MrTig-afk/claude-remote" }
+card_video: /assets/claude-remote-card.mp4
+poster: /assets/claude-remote-card-poster.png
+logo: /assets/logos/claude-remote.png
+status: shipped
+figure: { src: /assets/claude-remote-screen-list.png, alt: "Claude Remote project list on a phone", caption: "Projects · tap one to start a session" }
+arch: [Phone tap, Tailscale serve (HTTPS), Node agent on 127.0.0.1, launch-session.ps1, claude --remote-control, Claude app Code tab]
+---
+
+## Problem
+
+Claude Code runs on the PC at the desk. Away from the desk there was no way to start a session in a project folder with my own hooks, skills, MCP servers and rules, and cloud sessions do not have that setup.
+
+## What I built
+
+A remote start button for Claude Code. Tap a project on your phone and a session starts on your Windows PC in that folder, with your own local setup. The session then waits in the Claude app's Code tab, where you drive it, and STOP ends it from the phone. It is deliberately not a terminal: the Claude app already drives sessions well, so this only has to start one with nobody at the desk.
+
+## Architecture
+
+The phone talks only to Tailscale serve, which terminates HTTPS on the PC and proxies to a Node agent that never binds anything but loopback. Every API route needs a token issued by the passcode. A tap runs a launcher that changes into the project, sets up its Python environment without running a file from the project, and opens a visible window running `claude --remote-control`. The tile turns green only once the agent has proved a live process.
+
+## Key decisions
+
+- **Built for an unlocked phone.** A passcode every time the app opens: scrypt with a per-install salt, a timing-safe compare, and a delay that grows with each miss but never locks the owner out for good.
+- **Web Push from the RFCs.** RFC 8291 encryption and RFC 8292 VAPID tokens written with `node:crypto` alone, checked against the RFC's own test vector. No push library.
+- **Updates that roll back.** A Claude Code SessionStart hook swaps the agent in the background, checks it came up, and puts the previous version back if it did not.
+- **A UI that never claims too much.** A filled green dot means the agent proved a live process; starting, unconfirmed and unknown states are hollow rings.
+
+## Results
+
+Open source (MIT) with a one-line install as a Claude Code plugin. Zero runtime dependencies, 20 API routes all behind the passcode, and 0 of 10 hostile folder-name injections ran, pinned by a test. Windows only for now; a macOS CI job tracks the port.
